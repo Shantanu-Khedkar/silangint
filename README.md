@@ -15,7 +15,7 @@ Sign-Language-Interpreter aims to allow a fluent sign-language user to sign into
 ## Built With
 Sign-Language-Interpreter was built with these technologies and libraries:
 - [React-Native](https://reactnative.dev/)
-- [Expo]https://expo.dev/
+- [Expo](https://expo.dev/)
 #
 ## Usage
 
