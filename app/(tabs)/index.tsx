@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Button, TouchableOpacity, TextInput, TextBase, TouchableWithoutFeedback, Keyboard, Pressable, Platform } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity, TextInput, TextBase, TouchableWithoutFeedback, Keyboard, Pressable, Platform, SafeAreaView } from 'react-native';
 import { Link } from 'expo-router'; 
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
@@ -11,9 +11,11 @@ function dismissKeyboard() { if (Platform.OS != "web"){ Keyboard.dismiss(); } }
 export default function Index() {
    return (
     <Pressable style={{ flex: 1 }} onPress={dismissKeyboard}>
+      <SafeAreaView style={{height: 400}}>
     <View style={styles.cameraContainer}>
     <CameraViewer ></CameraViewer>
     </View>
+    </SafeAreaView>
     <View style={styles.interfaceContainer}>
     <StabilityIndicator></StabilityIndicator>
     
