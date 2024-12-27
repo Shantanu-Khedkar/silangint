@@ -1,10 +1,11 @@
 import { Tabs } from 'expo-router';
-
+import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 export default function TabLayout() {
   return (
+   
 <Tabs
   screenOptions={{
     tabBarActiveTintColor: '#ffd33d',
@@ -12,6 +13,7 @@ export default function TabLayout() {
       backgroundColor: '#25292e',
     },
     headerShadowVisible: false,
+    headerShown: false,
     headerTintColor: '#fff',
     tabBarStyle: {
     backgroundColor: '#25292e',
@@ -37,5 +39,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+
   );
 }
