@@ -15,14 +15,15 @@ export default function Index() {
     <CameraViewer ></CameraViewer>
     </View>
     <View style={styles.interfaceContainer}>
-    <TextInput
+    <StabilityIndicator></StabilityIndicator>
+    
+        <View style={{flexDirection: 'column', gap: 10, justifyContent: "flex-end", marginTop: 10, flexGrow:1}}>
+        <TextInput
           editable
           multiline
           onChangeText={text => onChangeText(text)}
           style={styles.textBox}
         />
-        <View style={{flexDirection: 'column', gap: 10, justifyContent: "flex-end"}}>
-      <StabilityIndicator></StabilityIndicator>
       <TouchableOpacity style={styles.speakTextBtn}>
               <Text style={{fontSize:20, color:'rgb(44, 44, 44)', fontWeight: 530}}>Speak Text</Text>
               <Ionicons name='volume-high' color='rgb(44, 44, 44)' size={25} />
