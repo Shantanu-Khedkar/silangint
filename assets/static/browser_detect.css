@@ -1,0 +1,109 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: roboto;
+    color: #3d3d3d;
+    --mdc-theme-primary: #007f8b;
+    --mdc-theme-on-primary: #f1f3f4;
+    margin-left: 0px;
+}
+
+.container {
+    position: relative;
+}
+
+
+#predicted_result{
+    position: relative;
+  text-align: left;
+  padding: 10px;
+  background-color: #656565;
+  border-radius: 12.5px;
+  min-width:calc(10px + 1em);
+  max-width:100%;
+  font-weight: bold;
+  color:#DFDFDF
+}
+.wrapper_result{
+    position: relative;
+  text-align: left;
+  padding: 10px;
+  background-color: #F3F3F3;
+  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.25);
+  margin: 10px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+
+
+}
+
+
+#text{
+  text-align: center;
+  padding: 10px;
+  background-color:#d9d9d9;
+  
+  margin: none;
+  margin-top: 0px;
+  border-radius: 12.25px;
+  resize: none;
+  display:block; position:relative;
+  width:100%;
+  border: none;
+    font-size:15px;
+
+}
+.wrapper_text{
+    position: relative;
+  text-align: left;
+  padding: 10px;
+  background-color: #F3F3F3;
+  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.25);
+  margin: 10px;
+  margin-top: none;
+  border-radius: 15px;
+  overflow-y: hidden;
+}
+.canvas_wrapper{
+  position: relative;
+text-align: left;
+height:290px;
+background-color: #F3F3F3;
+box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.38);
+margin:10px;
+margin-bottom: 20px;
+
+border-radius: 15px;
+overflow: hidden;
+}
+#output_canvas{
+    display:block; position:absolute;
+    left:0px;
+    width:100%
+}
+#text-to-speech{
+  margin-top: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 12.25px;
+    width:100%;
+    background-color: #374e60;
+    font-size: large;
+    border: none;
+    color:#d3d3d3
+}
+#webcamButton{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding:10px;
+  border:none;
+  border-radius: 12.25px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.38);
+}

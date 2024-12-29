@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head></head>
+<meta charset="UTF-8">
+
+
+<title>Sign Language Interpreter</title>
+
+
+<script>
+    window.console = window.console || function (t) { };
+</script>
+
+<link rel="stylesheet" type="text/css" href="../assets/static/browser_detect.css" />
+
+
+</head>
+
+<body translate="no">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-cpu"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"></script>
+
+
+    <div class="container">
+
+        <video id="webcam" style="display:none" autoplay playsinline muted></video>
+        <div class="canvas_wrapper" id="canvas_wrapper">
+            <button id="switch-camera" style="display:none; position: absolute; top:10px; left:10px; padding:5px; height:40px; width:40px; text-align: center; border-radius: 12.25px; font-size: 20px; font-weight: 900; border:none;   background-color: #f2f2f2; color:black;
+  box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.38); z-index:100">
+                <span>⟳</span>
+            </button>
+            <canvas class="output_canvas" id="output_canvas" width="100%" height="300%"></canvas>
+            <center>
+                <button id="webcamButton" style="font-weight: 600; color:black;">
+                    <span>Enable Webcam</span>
+                </button>
+            </center>
+        </div>
+    </div>
+    <center>
+        <img id="output_image" style="display:none"></img>
+        <div class="wrapper_result">
+            <div id="predicted_result">></div>
+        </div>
+        <div class="wrapper_text">
+            <textarea id="text" onkeyup="set_output_array(this.value)"></textarea>
+            <button id="text-to-speech" onclick="speak(document.getElementById('text').value)">
+                <span>Listen 🔊</span>
+            </button>
+
+        </div>
+        <center>
+            <script>
+                var synthesis = window.speechSynthesis;
+
+                if ('speechSynthesis' in window) {
+                    
+                    var synthesis = window.speechSynthesis;
+
+                    // Get the first `en` language voice in the list
+                    var voice = synthesis.getVoices().filter(function (voice) {
+                        return voice.lang === 'en';
+                    })[0];
+
+                    // Create an utterance object
+
+                } else {
+                    console.log('Text-to-speech not supported.');
+                }
+
+                function speak(text) {
+
+                    if ('speechSynthesis' in window) {
+
+                        // Speak the utterance
+                    var utterance = new SpeechSynthesisUtterance(text);
+
+                    // Set utterance properties
+                    utterance.voice = voice;
+                    utterance.pitch = 0.6;
+                    utterance.rate = 0.8;
+                    utterance.volume = 0.8;
+                        synthesis.speak(utterance);
+                    } else {
+                        console.log('Text-to-speech not supported.');
+                    }
+                }
+                var word_list = []
+
+
+                function set_output_array(text) {
+                    console.log(text)
+                    word_list = text.split("");
+                    console.log(word_list)
+                }
+
+            </script>
+
+            <script type="module">
+
+
+                import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
+                let handLandmarker = undefined;
+                let runningMode = "IMAGE";
+                let enableWebcamButton;
+                let webcamRunning = false;
+                var time_since_letter = 0
+                var last_letter_time = 0
+                var is_first_run = 1
+                // Before we can use HandLandmarker class we must wait for it to finish
+                // loading. Machine Learning models can be large and take a moment to
+                // get everything needed to run.
+                const createHandLandmarker = async () => {
+                    const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm");
+                    handLandmarker = await HandLandmarker.createFromOptions(vision, {
+                        baseOptions: {
+                            modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`,
+                            delegate: "GPU"
+                        },
+                        runningMode: runningMode,
+                        numHands: 1
+                    });
+                };
+                createHandLandmarker();
+
+                const MODEL_PATH = "https://huggingface.co/spaces/HuggingFace-SK/Sign-Language-Interpreter/resolve/main/exported/model.tflite"
+                var objectDetector = tflite.loadTFLiteModel(MODEL_PATH);
+
+                /********************************************************************
+                // Continuously grab images
+                ********************************************************************/
+                var global_res = 0;
+                const video = document.getElementById("webcam");
+                const canvasElement = document.getElementById("output_canvas");
+                const canvasCtx = canvasElement.getContext("2d");
+                var x_array = []
+                var y_array = []
+                var video_facing_mode = "user"
+                // Check if webcam access is supported.
+                const hasGetUserMedia = () => { var _a; return !!((_a = navigator.mediaDevices) === null || _a === void 0 ? void 0 : _a.getUserMedia); };
+                // If webcam supported, add event listener to button for when user
+                // wants to activate it.
+                if (hasGetUserMedia()) {
+                    enableWebcamButton = document.getElementById("webcamButton");
+                    enableWebcamButton.addEventListener("click", enableCam);
+                    document.getElementById("switch-camera").addEventListener("click", switch_camera);
+                }
+                else {
+                    console.warn("getUserMedia() is not supported by your browser");
+                }
+                async function switch_camera() {
+                    if (video_facing_mode == 'user') {
+                        webcamRunning = false
+                        video_facing_mode = 'environment'
+                        await load_camera()
+                        webcamRunning = true
+                    }
+                    else {
+                        webcamRunning = false
+                        video_facing_mode = 'user'
+                        await load_camera()
+                        webcamRunning = true
+                    }
+                }
+                // Enable the live webcam view and start detection.
+                function enableCam(event) {
+                    if (!handLandmarker) {
+                        console.log("Wait! objectDetector not loaded yet.");
+                        return;
+                    }
+                    if (webcamRunning === true) {
+                        webcamRunning = false;
+                        enableWebcamButton.innerText = "ENABLE PREDICTIONS";
+                    }
+                    else {
+                        webcamRunning = true;
+                        enableWebcamButton.style = "display:none"
+                        document.getElementById("switch-camera").style.display = "block"
+
+                    }
+                    // getUsermedia parameters.
+                    load_camera()
+                }
+                function load_camera() {
+                    const constraints = {
+                        video: {
+                            facingMode: video_facing_mode
+                        }
+                    };
+                    // Activate the webcam stream.
+                    navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+                video.play();
+                video.addEventListener("loadeddata", predictWebcam);
+            })
+            .catch((error) => {
+                console.error("Error accessing the camera: ", error);
+            });
+                }
+                let lastVideoTime = -1;
+                let results = undefined;
+                console.log(video);
+                async function predictWebcam() {
+                    if (video.videoHeight == 0) {
+                        return
+                    }
+                    canvasElement.width = window.innerWidth;
+                    // Start detecting the stream.
+                    if (runningMode === "IMAGE") {
+                        runningMode = "VIDEO";
+                        await handLandmarker.setOptions({ runningMode: "VIDEO" });
+                    }
+                    let startTimeMs = performance.now();
+                    if (lastVideoTime !== video.currentTime) {
+                        lastVideoTime = video.currentTime;
+                        results = handLandmarker.detectForVideo(video, startTimeMs);
+                    }
+                    canvasCtx.save();
+                    canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                    canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
+                    if (is_first_run == 1) {
+                        var elem_rect = document.getElementById("output_canvas").getBoundingClientRect()
+                        console.log(elem_rect.height | 0);
+                        document.getElementById("canvas_wrapper").style.height = (elem_rect.height | 0).toString() + "px"
+
+                        is_first_run = 0
+                    }
+
+                    if (results.landmarks && results.handednesses[0]) {
+                        var current_time = Math.round(Date.now())
+                        document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / 10) + "%"
+                        if (results.handednesses[0][0].categoryName == "Left") {
+                            annotateImage()
+                            console.log("LEFT")
+                            //detectSign()
+                        } else {
+                            console.log("RIGHT")
+                            var current_result = "_"
+                            var previous_result = document.getElementById("predicted_result").innerText
+                            document.getElementById("predicted_result").innerText = current_result
+
+
+                            if (previous_result == current_result) {
+                                if (current_time - last_letter_time > 1000) {
+                                    last_letter_time = current_time
+                                    word_list.push(" ")
+                                    console.log(word_list)
+                                    document.getElementById("text").value = word_list.join('')
+                                }
+                            }
+                            else {
+                                last_letter_time = current_time
+                            }
+                        }
+                    }
+                    else {
+                        if (30 > calculateCanvasBrightness(canvasElement)) {
+
+                            var current_result = "<"
+                            var previous_result = document.getElementById("predicted_result").innerText
+                            document.getElementById("predicted_result").innerText = current_result
+                            var current_time = Math.round(Date.now())
+                            console.log(current_time - last_letter_time)
+                            if (previous_result == current_result) {
+                                if (current_time - last_letter_time > 400) {
+                                    last_letter_time = current_time
+                                    word_list.pop()
+                                    console.log(word_list)
+                                    document.getElementById("text").value = word_list.join('')
+                                }
+                            }
+                            else {
+                                last_letter_time = current_time
+                            }
+                        } else {
+                            last_letter_time = Math.round(Date.now())
+
+                            document.getElementById("predicted_result").style.width = String(0) + "%"
+                        }
+                    }
+
+                    canvasCtx.restore();
+                    // Kepp predicting
+                    if (webcamRunning === true) {
+                        window.requestAnimationFrame(predictWebcam);
+                    }
+                }
+                function annotateImage() {
+
+                    //console.log(results.landmarks)
+                    if (results.landmarks[0]) {
+                        x_array = []
+                        y_array = []
+                        results.landmarks[0].forEach(iterate)
+                        //console.log(x_array)
+                        var image_height = (video.videoHeight / video.videoWidth) * canvasElement.width
+                        var image_width = canvasElement.width
+                        var min_x = Math.min(...x_array) * image_width
+                        var min_y = Math.min(...y_array) * image_height
+                        var max_x = Math.max(...x_array) * image_width
+                        var max_y = Math.max(...y_array) * image_height
+
+                        var sect_height = max_y - (min_y)
+                        var sect_width = max_x - (min_x)
+                        var center_x = (min_x + max_x) / 2
+                        var center_y = (min_y + max_y) / 2
+
+                        var sect_diameter = 50
+                        if (sect_height > sect_width) {
+                            sect_diameter = sect_height
+                            //console.log("sect_height", sect_diameter)
+                        }
+                        if (sect_height < sect_width) {
+                            sect_diameter = sect_width
+                            // console.log("sect_width", sect_diameter)
+                        }
+
+                        sect_diameter = sect_diameter + 50
+                        var sect_radius = sect_diameter / 2
+                        var crop_top = center_y - sect_radius
+                        var crop_bottom = center_y + sect_radius
+                        var crop_left = center_x - sect_radius
+                        var crop_right = center_x + sect_radius
+                        if (crop_top < 0) {
+                            crop_top = 0
+                        }
+                        if (crop_left < 0) {
+                            crop_left = 0
+                        }
+                        if (crop_right > image_width) {
+                            crop_right = image_width
+                        }
+                        if (crop_bottom > image_height) {
+                            crop_bottom = image_height
+                        }
+
+                        canvasCtx.beginPath();
+                        canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
+                        canvasCtx.stroke();
+
+
+                    }
+                    /* for (const landmarks of results.multiHandLandmarks) {
+                                drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
+                                    color: "#00FF00",
+                                    lineWidth: 5
+                                });
+                                drawLandmarks(canvasCtx, landmarks, { color: "#FF0000", lineWidth: 2 });
+                            }*/
+                    // console.log(results)
+                    const landmarks = results.landmarks;
+                    if (landmarks[0]) {
+                        var hand = landmarks[0]
+
+                        // Thumb connections
+                        drawConnection(hand[4], hand[3], '#ffe5b4', 5); // 4-3
+                        drawConnection(hand[3], hand[2], '#ffe5b4', 5); // 3-2
+                        drawConnection(hand[2], hand[1], '#ffe5b4', 5); // 2-1
+
+                        // Index connections
+                        drawConnection(hand[8], hand[7], '#804080', 5); // 8-7
+                        drawConnection(hand[7], hand[6], '#804080', 5); // 7-6
+                        drawConnection(hand[6], hand[5], '#804080', 5); // 6-5
+
+                        // Middle connections
+                        drawConnection(hand[12], hand[11], '#ffcc00', 5); // 12-11
+                        drawConnection(hand[11], hand[10], '#ffcc00', 5); // 11-10
+                        drawConnection(hand[10], hand[9], '#ffcc00', 5); // 10-9
+
+                        // Ring connections
+                        drawConnection(hand[16], hand[15], '#30ff30', 5); // 16-15
+                        drawConnection(hand[15], hand[14], '#30ff30', 5); // 15-14
+                        drawConnection(hand[14], hand[13], '#30ff30', 5); // 14-13
+
+                        // Pinky connections
+                        drawConnection(hand[20], hand[19], '#1565c0', 5); // 20-19
+                        drawConnection(hand[19], hand[18], '#1565c0', 5); // 19-18
+                        drawConnection(hand[18], hand[17], '#1565c0', 5); // 18-17
+
+                        drawConnection(hand[0], hand[1], '#808080', 5); // 0-1
+                        drawConnection(hand[0], hand[5], '#808080', 5); // 0-5
+                        drawConnection(hand[0], hand[17], '#808080', 5); // 0-17
+                        drawConnection(hand[5], hand[9], '#808080', 5); // 5-9
+                        drawConnection(hand[9], hand[13], '#808080', 5); // 9-13
+                        drawConnection(hand[13], hand[17], '#808080', 5); // 13-17
+
+                        // Thumb
+                        drawLandmarks(canvasCtx, hand[2], '#ffe5b4'); // Thumb tip (2)
+                        drawLandmarks(canvasCtx, hand[3], '#ffe5b4'); // Thumb base (3)
+                        drawLandmarks(canvasCtx, hand[4], '#ffe5b4'); // Thumb base (4)
+
+                        // Index
+                        drawLandmarks(canvasCtx, hand[6], '#804080'); // Index tip (6)
+                        drawLandmarks(canvasCtx, hand[7], '#804080'); // Index base (7)
+                        drawLandmarks(canvasCtx, hand[8], '#804080'); // Index base (8)
+
+                        // Middle
+                        drawLandmarks(canvasCtx, hand[10], '#ffcc00'); // Middle tip (10)
+                        drawLandmarks(canvasCtx, hand[11], '#ffcc00'); // Middle base (11)
+                        drawLandmarks(canvasCtx, hand[12], '#ffcc00'); // Middle base (12)
+
+                        // Ring
+                        drawLandmarks(canvasCtx, hand[14], '#30ff30'); // Ring tip (14)
+                        drawLandmarks(canvasCtx, hand[15], '#30ff30'); // Ring base (15)
+                        drawLandmarks(canvasCtx, hand[16], '#30ff30'); // Ring base (16)
+
+                        // Pinky
+                        drawLandmarks(canvasCtx, hand[18], '#1565c0'); // Pinky tip (18)
+                        drawLandmarks(canvasCtx, hand[19], '#1565c0'); // Pinky base (19)
+                        drawLandmarks(canvasCtx, hand[20], '#1565c0'); // Pinky base (20)
+
+                        drawLandmarks(canvasCtx, hand[0], '#ff3030'); // Wrist (0)
+
+                        drawLandmarks(canvasCtx, hand[1], '#ff3030'); // Palm base (1)
+
+                        drawLandmarks(canvasCtx, hand[5], '#ff3030'); // Index palm (5)
+
+                        drawLandmarks(canvasCtx, hand[9], '#ff3030'); // Middle palm (9)
+
+                        drawLandmarks(canvasCtx, hand[13], '#ff3030'); // Ring palm (13)
+
+                        drawLandmarks(canvasCtx, hand[17], '#ff3030'); // Pinky palm (17)
+                        cropCanvas(canvasElement, crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top)
+                    }
+                    // Add more drawing calls for each landmark collection as needed
+
+
+
+
+                    //# sourceURL=pen.js
+                }
+
+
+                function iterate(x, y) {
+                    x_array.push(x.x)
+                    y_array.push(x.y)
+                }
+
+                const cropCanvas = (sourceCanvas, left, top, width, height) => {
+                    let destCanvas = document.createElement('canvas');
+                    destCanvas.width = 224;
+                    var cropAspectRatio = width / height;
+
+                    destCanvas.height = 224 / cropAspectRatio
+                    destCanvas.getContext("2d").drawImage(
+                        sourceCanvas,
+                        left, top, width, height,  // source rect with content to crop
+                        0, 0, 224, destCanvas.height);      // newCanvas, same size as source 
+                    var predictionInput = tf.browser.fromPixels(destCanvas.getContext("2d").getImageData(0, 0, 224, 224))
+
+                    predict(tf.expandDims(predictionInput, 0));
+                }
+                async function predict(inputTensor) {
+
+                    //console.log("in predict")
+                    var letter_list = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
+                    objectDetector.then(function (res) {
+                        var prediction = res.predict(inputTensor);
+                        var outputArray = prediction.dataSync(); // Get the output as an array
+                        var predictedClass = outputArray.indexOf(Math.max(...outputArray)); // Get the index
+                        var current_result = letter_list[predictedClass]
+                        var previous_result = document.getElementById("predicted_result").innerText
+                        document.getElementById("predicted_result").innerText = current_result
+                        var current_time = Math.round(Date.now())
+
+                        if (previous_result == current_result) {
+                            if (current_time - last_letter_time > 1000) {
+                                last_letter_time = current_time
+                                word_list.push(current_result)
+                                console.log(word_list)
+                                document.getElementById("text").value = word_list.join('')
+                            }
+                        }
+                        else {
+                            last_letter_time = current_time
+                        }
+                        console.log(letter_list[predictedClass]);
+                    }, function (err) {
+                        console.log(err);
+                    });
+
+                }
+
+                function drawLandmarks(canvasCtx, landmarks, color) {
+                    var image_height = (video.videoHeight / video.videoWidth) * canvasElement.width
+                    var image_width = canvasElement.width
+
+                    canvasCtx.fillStyle = color;
+                    canvasCtx.strokeStyle = 'white';
+                    canvasCtx.lineWidth = 1;
+                    canvasCtx.beginPath();
+                    canvasCtx.arc(landmarks.x * image_width, landmarks.y * image_height, 6, 0, 2 * Math.PI);
+                    canvasCtx.fill();
+                    canvasCtx.stroke();
+
+                }
+
+                function drawConnection(startNode, endNode, strokeColor, strokeWidth) {
+
+                    var image_height = (video.videoHeight / video.videoWidth) * canvasElement.width
+                    var image_width = canvasElement.width
+
+                    canvasCtx.strokeStyle = strokeColor;
+                    canvasCtx.lineWidth = strokeWidth;
+                    canvasCtx.beginPath();
+                    canvasCtx.moveTo(startNode.x * image_width, startNode.y * image_height);
+                    canvasCtx.lineTo(endNode.x * image_width, endNode.y * image_height);
+                    canvasCtx.stroke();
+                }
+                function calculateCanvasBrightness(canvas) {
+                    const context = canvas.getContext('2d');
+
+                    // Get the image data from the canvas
+                    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+                    const data = imageData.data;
+
+                    let totalBrightness = 0;
+                    let pixelCount = 0;
+
+                    // Loop through each pixel
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];     // Red
+                        const g = data[i + 1]; // Green
+                        const b = data[i + 2]; // Blue
+
+                        // Calculate brightness for this pixel
+                        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+                        totalBrightness += brightness;
+                        pixelCount++;
+                    }
+
+                    // Calculate average brightness
+                    const averageBrightness = totalBrightness / pixelCount;
+
+                    return averageBrightness;
+                }
+            </script>
+
+
+
+
+
+            <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/vision_wasm_internal.js"
+                crossorigin="anonymous"></script>
+</body>
+
+</html>

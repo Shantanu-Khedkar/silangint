@@ -1,0 +1,28 @@
+{
+    "version": "1.0.0",
+    "name": "silangint",
+    "app-name": "silangint",
+    "package-name": "webview",
+    "project-type": "webview",
+    "icon": "./assets/icon/icon.png",
+    "dist-path": "./dist",
+    "permission": [
+        "android.permission.INTERNET",
+	"android.permission.CAMERA"
+    ],
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "start:dev": "node .",
+        "build": "androidjs build"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "androidjs": "^2.0.2"
+    },
+    "project-name": "silangint",
+    "theme": {
+        "fullScreen": true
+    }
+}

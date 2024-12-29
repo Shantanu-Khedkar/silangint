@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Feed on Canvas</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Camera Feed on Canvas</h1>
+    <video id="video" width="640" height="480" 
+    autoplay
+    muted
+    ></video>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        // Access the device camera and stream to video element
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+                video.play();
+                drawToCanvas();
+            })
+            .catch((error) => {
+                console.error("Error accessing the camera: ", error);
+            });
+
+        // Function to draw video frames to canvas
+        function drawToCanvas() {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            requestAnimationFrame(drawToCanvas);
+        }
+    </script>
+</body>
+</html>
