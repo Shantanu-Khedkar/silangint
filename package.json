@@ -8,7 +8,8 @@
     "dist-path": "./dist",
     "permission": [
         "android.permission.INTERNET",
-	"android.permission.CAMERA"
+	"android.permission.CAMERA",
+	"android.permission.READ_EXTERNAL_STORAGE"
     ],
     "description": "",
     "main": "main.js",
