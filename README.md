@@ -11,7 +11,7 @@ Many people around the world use sign language to communicate. Communication occ
 ## About
 
 Sign-Language-Interpreter aims to allow a fluent sign-language user to sign into a camera and have the user's message be spoken aloud. 
-_Currently this project has been implemented as a demo website running on [HugggingFace](https://huggingface.co/spaces/HuggingFace-SK/Sign-Language-Interpreter). To reach a wider audience and eliminate dependency on internet availability, this demo will be recreated as a react-native app._
+_Currently this project has been implemented as a demo website running on [HugggingFace](https://huggingface.co/spaces/HuggingFace-SK/Sign-Language-Interpreter). To reach a wider audience and eliminate dependency on internet availability, this AndroidJS build is being developed_
 #
 ## Built With
 Sign-Language-Interpreter was built with these technologies and libraries:

@@ -3,7 +3,7 @@
 
 <head></head>
 <meta charset="UTF-8">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
 <title>Sign Language Interpreter</title>
 
@@ -20,7 +20,7 @@
 <body translate="no">
     <script src="../assets/ipc/androidjs.js"></script>
     <script src="http://127.0.0.1:8125/assets/static/drawing_utils.js" crossorigin="anonymous"></script>
-    <script src="http://127.0.0.1:8125/assets/static/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="http://127.0.0.1:8125/assets/static/hands.js" crossorigin="anonymous"></script>
     <script src="http://127.0.0.1:8125/assets/static/tfjs-core"></script>
     <script src="http://127.0.0.1:8125/assets/static/tfjs-backend-cpu"></script>
     <script src="http://127.0.0.1:8125/assets/static/tf-tflite.min.js"></script>
@@ -53,12 +53,16 @@
                 <span>Listen 🔊</span>
             </button>
 
+            <audio id="audioPlayer">-</audio>
         </div>
         <div id="logUI">
 
         </div>
         <center>
             <script>
+                var speechSupported=true
+                var prevSpeech = ""
+
                 logUI = document.getElementById("logUI")
 
                 function logMessage(msg) {
@@ -84,6 +88,7 @@
                     return originalFetch(newUrl, init);
                 };
 
+
                 var synthesis = window.speechSynthesis;
 
                 if ('speechSynthesis' in window) {
@@ -98,24 +103,38 @@
                     // Create an utterance object
 
                 } else {
+                    speechSupported=false;
                     console.log('Text-to-speech not supported.');
                 }
 
                 function speak(text) {
 
-                    if ('speechSynthesis' in window) {
-
-                        // Speak the utterance
+                    if (!speechSupported){
+                    const audioPlayer = document.getElementById('audioPlayer');
+                    if(prevSpeech != text){
+                    prevSpeech=text
+                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t='+text; // Set the audio source
+                    console.log("Set src: ", audioPlayer.src)
+                }                   
+                    
+                    audioPlayer.play()      // Play the audio
+                        .then(() => {
+                            
+                            console.log('Audio is playing');
+                        })
+                        .catch(error => {
+                            console.error('Error playing audio:', error);
+                            prevSpeech=''
+                        });
+                    }else if('speechSynthesis' in window){
                         var utterance = new SpeechSynthesisUtterance(text);
-
-                        // Set utterance properties
                         utterance.voice = voice;
                         utterance.pitch = 0.6;
                         utterance.rate = 0.8;
                         utterance.volume = 0.8;
                         synthesis.speak(utterance);
-                    } else {
-                        console.log('Text-to-speech not supported.');
+                    }else{
+                        console.log("Text to speech is now not supported")
                     }
                 }
                 var word_list = []
@@ -221,14 +240,14 @@
                         }
                     };
                     // Activate the webcam stream.
-                    navigator.mediaDevices.getUserMedia({ video: true })
+                    navigator.mediaDevices.getUserMedia(constraints)
                         .then((stream) => {
                             video.srcObject = stream;
                             video.play();
                             video.addEventListener("loadeddata", predictWebcam);
                         })
                         .catch((error) => {
-                            console.error("Error accessing the camera: ", error);
+                            console.error("Error accessing the camera: ", error.name, error.message, error.code);
                         });
                 }
                 let lastVideoTime = -1;

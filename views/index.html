@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <title>Camera Feed on Canvas</title>
     <script src="../assets/ipc/androidjs.js"></script>
 </head>
@@ -10,10 +11,33 @@
     <h1 id="logger">-></h1>
     <button onclick="checkServer()">recheck</button>
     <script>
+        var appDir = "unset"
+        var userDir = "unset"
+        function getDir(){
+            try{
+            appDir = app.getPath('appData')+"/myapp"
+            userDir = app.getPath('userData')
+            }catch (error){
+                console.log("Not in Android WebView, setting defaults...")
+                appDir = './'
+                userDir = './'
+            }
+        setTimeout(sendDir, 50, appDir, userDir)
+        }
+        getDir()
+
+        function sendDir(appDir, userDir){
+            if((appDir != "unset") && (userDir != "unset")){
+            console.log(appDir)
+            document.getElementById("logger").innerHTML=document.getElementById("logger").innerHTML+appDir
+            front.send("appDir", appDir, userDir)
+            }else{
+                getDir()
+            }
+        }
         function loadMain(){
             window.location.href="main.html"
         }
-        checkServer()
         function checkServer(){
             document.getElementById("logger").innerHTML=document.getElementById("logger").innerHTML+'checking'
         front.send('isUp?', 'hi');
@@ -28,6 +52,11 @@
             loadMain()
         }
         
+        })
+    
+        front.on("gotAppDir", function(ms){
+            checkServer()
+            console.log("checkingserver")
         })
     </script>
 </body>
