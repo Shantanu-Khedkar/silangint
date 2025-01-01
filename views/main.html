@@ -11,9 +11,12 @@
 <script>
     window.console = window.console || function (t) { };
 </script>
-
+<!-- For Android -->
 <link rel="stylesheet" type="text/css" href="http://127.0.0.1:8125/assets/static/browser_detect.css" />
 
+<!-- For Web
+<link rel="stylesheet" type="text/css" href="static/browser_detect.css" />
+-->
 
 </head>
 
@@ -24,7 +27,18 @@
     <script src="http://127.0.0.1:8125/assets/static/tfjs-core"></script>
     <script src="http://127.0.0.1:8125/assets/static/tfjs-backend-cpu"></script>
     <script src="http://127.0.0.1:8125/assets/static/tf-tflite.min.js"></script>
+    <script src="http://127.0.0.1:8125/assets/static/vision_wasm_internal.js" crossorigin="anonymous"></script>
 
+    <!-- For Web
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-cpu"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-tflite/dist/tf-tflite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/vision_wasm_internal.js"
+                crossorigin="anonymous"></script>    
+     -->
 
     <div class="container">
 
@@ -60,7 +74,7 @@
         </div>
         <center>
             <script>
-                var speechSupported=true
+                var speechSupported = true
                 var prevSpeech = ""
 
                 logUI = document.getElementById("logUI")
@@ -80,7 +94,8 @@
                     const url = typeof input === 'string' ? input : input.url;
                     var newUrl = url
                     if (url == 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/vision_wasm_internal.wasm') {
-                        newUrl = 'http://127.0.0.1:8125/assets/static/vision_wasm_internal.wasm'
+                        newUrl = 'http://127.0.0.1:8125/assets/static/vision_wasm_internal.wasm' //For Android
+                        //newUrl = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/vision_wasm_internal.wasm' // For Web
 
                     }
                     console.log("This was FETCHED: ", newUrl)
@@ -100,40 +115,43 @@
                         return voice.lang === 'en';
                     })[0];
 
-                    // Create an utterance object
+                    // Create an utterance object ⣿
 
                 } else {
-                    speechSupported=false;
+                    speechSupported = false;
                     console.log('Text-to-speech not supported.');
                 }
 
                 function speak(text) {
+                    console.log("speech api support", speechSupported)
+                    console.log("condition: ", !speechSupported)
+                    console.log("condition2: ", speechSupported == false)
+                    console.log("speech api support", speechSupported)
+                    if (!speechSupported) {
+                        const audioPlayer = document.getElementById('audioPlayer');
+                        if (prevSpeech != text) {
+                            prevSpeech = text
+                            audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' + text; // Set the audio source
+                            console.log("Set src: ", audioPlayer.src)
+                        }
 
-                    if (!speechSupported){
-                    const audioPlayer = document.getElementById('audioPlayer');
-                    if(prevSpeech != text){
-                    prevSpeech=text
-                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t='+text; // Set the audio source
-                    console.log("Set src: ", audioPlayer.src)
-                }                   
-                    
-                    audioPlayer.play()      // Play the audio
-                        .then(() => {
-                            
-                            console.log('Audio is playing');
-                        })
-                        .catch(error => {
-                            console.error('Error playing audio:', error);
-                            prevSpeech=''
-                        });
-                    }else if('speechSynthesis' in window){
+                        audioPlayer.play()      // Play the audio
+                            .then(() => {
+
+                                console.log('Audio is playing');
+                            })
+                            .catch(error => {
+                                console.error('Error playing audio:', error);
+                                prevSpeech = ''
+                            });
+                    } else if ('speechSynthesis' in window) {
                         var utterance = new SpeechSynthesisUtterance(text);
                         utterance.voice = voice;
                         utterance.pitch = 0.6;
                         utterance.rate = 0.8;
                         utterance.volume = 0.8;
                         synthesis.speak(utterance);
-                    }else{
+                    } else {
                         console.log("Text to speech is now not supported")
                     }
                 }
@@ -150,8 +168,9 @@
 
             <script type="module">
 
-
-                import { HandLandmarker, FilesetResolver } from "http://127.0.0.1:8125/assets/static/tasks-vision@0.10.0";
+            
+                import { HandLandmarker, FilesetResolver } from "http://127.0.0.1:8125/assets/static/tasks-vision@0.10.0" // For Android
+                //import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0"; // For Web
                 let handLandmarker = undefined;
                 let runningMode = "IMAGE";
                 let enableWebcamButton;
@@ -163,10 +182,11 @@
                 // loading. Machine Learning models can be large and take a moment to
                 // get everything needed to run.
                 const createHandLandmarker = async () => {
-                    const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm");
+                    const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"); // This doesnt really matter as this is already imported somewhere else, and the code runs fine without the request
                     handLandmarker = await HandLandmarker.createFromOptions(vision, {
                         baseOptions: {
-                            modelAssetPath: `http://127.0.0.1:8125/assets/static/hand_landmarker.task`,
+                            modelAssetPath: `http://127.0.0.1:8125/assets/static/hand_landmarker.task`, // For Android
+                            // modelAssetPath: `https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task`, // For Web
                             delegate: "GPU"
                         },
                         runningMode: runningMode,
@@ -175,7 +195,8 @@
                 };
                 createHandLandmarker();
 
-                const MODEL_PATH = "http://127.0.0.1:8125/assets/static/model.tflite"
+                const MODEL_PATH = "http://127.0.0.1:8125/assets/static/model.tflite" // For Android
+                //const MODEL_PATH = "/exported" // For Web
                 var objectDetector = tflite.loadTFLiteModel(MODEL_PATH);
 
                 /********************************************************************
@@ -593,7 +614,7 @@
 
 
 
-            <script src="http://127.0.0.1:8125/assets/static/vision_wasm_internal.js" crossorigin="anonymous"></script>
+            
 </body>
 
 </html>
