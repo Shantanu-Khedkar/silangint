@@ -21,7 +21,7 @@ const server = http.createServer(async (request, response) => {
     let filePath = path.join(appDirPath, request.url);
     console.log(filePath)
     if (filePath === path.join(appDirPath, '/')) {
-        filePath = path.join(appDirPath, '/views/index.html'); // Default to index.html
+        filePath = path.join(appDirPath, '/views/main.html'); // Default to index.html
     }
     if (parsedUrl.pathname == "/speech") {
         console.log("speaking...")
