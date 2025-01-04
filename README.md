@@ -25,21 +25,35 @@ Sign-Language-Interpreter was built with these technologies and libraries:
 ## Installation
 
 To install Sign-Language-Interpreter, you first need the Android APK file. You may compile it yourself with AndroidJS, or use one of the [releases](https://github.com/Shantanu-Khedkar/silangint/tags) provided in this repository.
+
 ### Compile
+
 If you would like to compile it yourself, first set up the environment by downloading [Node.js](https://nodejs.org/en) on your host machine, and install the [androidjs](https://www.npmjs.com/package/androidjs) and [androidjs-builder](https://www.npmjs.com/package/androidjs-builder) modules.
-`$ npm install androidjs`
-`$ npm install -g androidjs-builder`
-You may also need to install the Java Development Kit if you are running on Debian or its derivatives.
-`$ sudo apt install default-jdk`
-Download, then extract one of the tarballs in the [releases](https://github.com/Shantanu-Khedkar/silangint/tags).
-`$ tar -xvzf silangint-xyz.tar.gz`
-Or clone the repository to get the most up-to-date version of the code.
-`$ git clone https://github.com/Shantanu-Khedkar/silangint.git`
-Once you have the source, you can `$ cd silangint` and install all its dependencies by running `$ npm install`.
-Finally, you can build the APK.
-`$ androidjs build`
+
+ `$ npm install androidjs`  
+`$ npm install -g androidjs-builder`  
+
+You may also need to install the Java Development Kit if you are running on Debian or its derivatives.  
+
+`$ sudo apt install default-jdk`  
+
+Download, then extract one of the tarballs in the [releases](https://github.com/Shantanu-Khedkar/silangint/tags).  
+
+`$ tar -xvzf silangint-xyz.tar.gz`  
+
+Or clone the repository to get the most up-to-date version of the code.  
+
+`$ git clone https://github.com/Shantanu-Khedkar/silangint.git`  
+
+Once you have the source, you can `$ cd silangint` and install all its dependancies by running `$ npm install`.  
+Finally, you can build the APK.  
+
+ `$ androidjs build`  
+ 
 The APK will build and be stored in `dist/silangint.apk`
+
 ### Install
+
 Then, you need to set the 'Allow Installation From Unknown Sources' setting in your Android device. Once the APK is downloaded to the device, you can simply install it with your package installer. For more information visit https://www.xda-developers.com/how-to-sideload-install-android-app-apk/
 
 ## Usage
