@@ -47,16 +47,16 @@
             <button id="switch-camera" style="display:none; position: absolute; top:10px; left:10px; padding:5px; height:40px; width:40px; text-align: center; border-radius: 12.25px; font-size: 20px; font-weight: 900; border:none; background-color: #ffffff2e; backdrop-filter: blur(30px); color:black; box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.38); z-index:100">
                 <span>⟳</span>
             </button>
-            <canvas class="output_canvas" id="output_canvas" width="100%" height="300%"></canvas>
+            <canvas class="output_canvas" id="output_canvas" width="100%" height="500%"></canvas>
             <center>
                 <button id="webcamButton" style="font-weight: 600;">
                     <span>Enable Webcam</span>
                 </button>
                 <div class="mode_switch_wrapper">
                 <div class="mode_switch" id="mode-switch" style="display: none;">
-                    <div class="mode_selector right" id="modeSelector"></div>
-                    <div class="mode_switch_modeBtn" onclick="switchMode(false)">Text</div>
-                    <div class="mode_switch_modeBtn"  onclick="switchMode(true)">Word</div>
+                    <div class="mode_selector" id="modeSelector"></div>
+                    <div class="mode_switch_modeBtn">Text</div>
+                    <div class="mode_switch_modeBtn">Word</div>
                     </div>
                 </div>
             </center>
@@ -94,15 +94,6 @@
 
     </div>
     <script>
-        function switchMode(modeState){
-            if(modeState){
-                document.getElementById('modeSelector').classList.toggle('right')
-                //document.getElementById('modeSelector').classList.toggle('left')
-            }else{
-                document.getElementById('modeSelector').classList.toggle('right')
-                //document.getElementById('modeSelector').classList.toggle('left')
-            }
-        }
         var speechSupported = true
         var prevSpeech = ""
 
@@ -207,6 +198,9 @@
         var time_since_letter = 0
         var last_letter_time = 0
         var is_first_run = 1
+        const letter_list = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
+        const phrase_list = [" Good"," Hello", " How're"," I'm", " Thanks", " You"]
+        var index_list = letter_list
         // Before we can use HandLandmarker class we must wait for it to finish
         // loading. Machine Learning models can be large and take a moment to
         // get everything needed to run.
@@ -225,12 +219,30 @@
         createHandLandmarker();
 
         const MODEL_PATH = "http://127.0.0.1:8125/assets/static/model.tflite" // For Android
+        const WORD_MODEL = "http://127.0.0.1:8125/assets/static/word.tflite" // For Android
         //const MODEL_PATH = "/exported" // For Web
-        var objectDetector = tflite.loadTFLiteModel(MODEL_PATH);
+        //const WORD_MODEL = "/word" // For Web
 
+        const letterDetector = tflite.loadTFLiteModel(MODEL_PATH);
+        const wordDetector = tflite.loadTFLiteModel(WORD_MODEL);
+        var objectDetector = letterDetector
         /********************************************************************
         // Continuously grab images
         ********************************************************************/
+       document.getElementById("modeSelector").addEventListener('click', function(){
+            document.getElementById('modeSelector').classList.toggle('right')
+            var modeState = Array.from(document.getElementById('modeSelector').classList).includes('right')
+            console.log("swicth", modeState)
+            if(modeState){
+                console.log("word")
+                objectDetector = wordDetector
+                index_list = phrase_list
+            }else{
+                console.log("letter")
+                objectDetector = letterDetector
+                index_list = letter_list
+            }
+        })
         var global_res = 0;
         const video = document.getElementById("webcam");
         const canvasElement = document.getElementById("output_canvas");
@@ -342,7 +354,7 @@
                     var current_result = "_"
                     var previous_result = document.getElementById("predicted_result").innerText
                     document.getElementById("predicted_result").innerText = current_result
-
+                    
 
                     if (previous_result == current_result) {
                         if (current_time - last_letter_time > 1000) {
@@ -555,18 +567,20 @@
             predict(tf.expandDims(predictionInput, 0));
         }
         async function predict(inputTensor) {
-
-            //console.log("in predict")
-            var letter_list = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
+            
+            console.log(index_list[0])
             objectDetector.then(function (res) {
                 var prediction = res.predict(inputTensor);
                 var outputArray = prediction.dataSync(); // Get the output as an array
                 var predictedClass = outputArray.indexOf(Math.max(...outputArray)); // Get the index
-                var current_result = letter_list[predictedClass]
+                var current_result = index_list[predictedClass]
                 var previous_result = document.getElementById("predicted_result").innerText
                 document.getElementById("predicted_result").innerText = current_result
                 var current_time = Math.round(Date.now())
-
+                if (index_list[0]==" Good"){
+                    previous_result = " "+previous_result
+                }
+                console.log("p:",previous_result, "c:",current_result)
                 if (previous_result == current_result) {
                     if (current_time - last_letter_time > 1000) {
                         last_letter_time = current_time
@@ -578,7 +592,7 @@
                 else {
                     last_letter_time = current_time
                 }
-                console.log(letter_list[predictedClass]);
+                console.log(index_list[predictedClass]);
             }, function (err) {
                 console.log(err);
             });

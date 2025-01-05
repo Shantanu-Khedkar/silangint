@@ -1,17 +1,22 @@
 ——————————————————————————————
---- Technical TODO --- |     |
-——————————————————————————————
-make word_model.tflite |     |
-add predictive text    |     |
-add speech-to-sign     |     |
-add page switching     |     |
-add settings page      |     |
-add info / help page   |     |
-share android and web  |  ✔  |
-fix - camera switch    |  ✔  | 
-fix - text-to-speach   |  ✔  |
-dynamic app dir        |  ✔  |
-add bottom-nav         |  ✔  |
+--- Technical TODO --- |     |   |
+——————————————————————————————   |
+make word_model.tflite |  ✔  |1  |
+make better asl.tflite |     |2  |
+add model switching    |  ✔  |1  | -
+add predictive text    |     |2  |
+add speech-to-sign     |     |?  |
+add translation        |     |1  | -
+add page switching     |     |2  |
+add settings page      |     |3  |
+add info / help page   |     |3  |
+add loading page       |     |2  |
+update UI design       |     |?  |
+share android and web  |  ✔  |   |
+fix - camera switch    |  ✔  |   |
+fix - text-to-speach   |  ✔  |   |
+dynamic app dir        |  ✔  |   |
+add bottom-nav         |  ✔  |   |
 ——————————————————————————————
 
 ——————————————————————————————
@@ -19,8 +24,10 @@ add bottom-nav         |  ✔  |
 ——————————————————————————————
 Finalise Name          |     |
 Create Logo            |     |
-Project Brief          |     |
+Project Report         |     |
 Charts                 |     |
 Promotional Pamphlets  |     |
+Banner                 |     |
+Make Mockups           |     |
+add README.md          |  ✔  |
 ——————————————————————————————
-

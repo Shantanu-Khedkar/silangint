@@ -65,6 +65,7 @@ body {
   top:5px;
   left: 5px;
   transition: all 0.25s ease-out;
+  z-index: 10;
 }
 
 .mode_switch{
