@@ -39,61 +39,78 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm/vision_wasm_internal.js"
                 crossorigin="anonymous"></script>    
      -->
+    <section id="home-page">
+        <div class="container">
 
-    <div class="container">
-
-        <video id="webcam" style="display:none" autoplay playsinline muted></video>
-        <div class="canvas_wrapper" id="canvas_wrapper">
-            <button id="switch-camera" style="display:none; position: absolute; top:10px; left:10px; padding:5px; height:40px; width:40px; text-align: center; border-radius: 12.25px; font-size: 20px; font-weight: 900; border:none; background-color: #ffffff2e; backdrop-filter: blur(30px); color:black; box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.38); z-index:100">
-                <span>⟳</span>
-            </button>
-            <canvas class="output_canvas" id="output_canvas" width="100%" height="500%"></canvas>
-            <center>
-                <button id="webcamButton" style="font-weight: 600;">
-                    <span>Enable Webcam</span>
+            <video id="webcam" style="display:none" autoplay playsinline muted></video>
+            <div class="canvas_wrapper" id="canvas_wrapper">
+                <button id="switch-camera"
+                    style="display:none; position: absolute; top:10px; left:10px; padding:5px; height:40px; width:40px; text-align: center; border-radius: 12.25px; font-size: 20px; font-weight: 900; border:none; background-color: #ffffff2e; backdrop-filter: blur(30px); color:black; box-shadow: 0px 4px 20px 4px rgba(0, 0, 0, 0.38); z-index:100">
+                    <span>⟳</span>
                 </button>
-                <div class="mode_switch_wrapper">
-                <div class="mode_switch" id="mode-switch" style="display: none;">
-                    <div class="mode_selector" id="modeSelector"></div>
-                    <div class="mode_switch_modeBtn">Text</div>
-                    <div class="mode_switch_modeBtn">Word</div>
+                <canvas class="output_canvas" id="output_canvas" width="100%" height="500%"></canvas>
+                <center>
+                    <button id="webcamButton" style="font-weight: 600;">
+                        <span>Enable Webcam</span>
+                    </button>
+                    <div class="mode_switch_wrapper">
+                        <div class="mode_switch" id="mode-switch" style="display: none;">
+                            <div class="mode_selector" id="modeSelector"></div>
+                            <div class="mode_switch_modeBtn">Text</div>
+                            <div class="mode_switch_modeBtn">Word</div>
+                        </div>
                     </div>
-                </div>
-            </center>
-            
-        </div>
-    </div>
-    <center>
-        <img id="output_image" style="display:none"></img>
+                </center>
 
-        <div class="wrapper_result">
-            <div id="predicted_result">></div>
+            </div>
         </div>
-        <div class="wrapper_text">
-            <textarea id="text" onkeyup="set_output_array(this.value)"></textarea>
-            <button id="text-to-speech" onclick="speak(document.getElementById('text').value)">
-                <span>Listen 🔊</span>
-            </button>
+        <center>
+            <img id="output_image" style="display:none"></img>
 
-            <audio id="audioPlayer">-</audio>
-        </div>
-        <div id="logUI">
+            <div class="wrapper_result">
+                <div id="predicted_result">></div>
+            </div>
+            <div class="wrapper_text">
+                <textarea id="text" onkeyup="set_output_array(this.value)"></textarea>
+                <button id="text-to-speech" onclick="speak(document.getElementById('text').value)">
+                    <span>Listen 🔊</span>
+                </button>
 
-        </div>
-    </center>
+                <audio id="audioPlayer">-</audio>
+            </div>
+            <div id="logUI">
+
+            </div>
+        </center>
+    </section>
+    <section id="info-page">infopage</section>
+    <section id="settings-page">settingspage</section>
     <div class="bottom-nav">
-        <div class="bottom-nav-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="28px" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>
-            </div>
-        <div class="bottom-nav-btn center-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" height="36px" width="36px" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path fill="#fff"d="M224 0c17.7 0 32 14.3 32 32l0 208-64 0 0-208c0-17.7 14.3-32 32-32zm96 160c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32zm64 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64zM93.3 51.2L175.9 240l-69.9 0L34.7 76.8C27.6 60.6 35 41.8 51.2 34.7s35.1 .3 42.1 16.5zm27 221.3l-.2-.5 69.9 0 26.1 0c22.1 0 40 17.9 40 40s-17.9 40-40 40l-56 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l56 0c39.8 0 72-32.2 72-72l0-.6c9.4 5.4 20.3 8.6 32 8.6c13.2 0 25.4-4 35.6-10.8c8.7 24.9 32.5 42.8 60.4 42.8c11.7 0 22.6-3.1 32-8.6l0 8.6c0 88.4-71.6 160-160 160l-61.7 0c-42.4 0-83.1-16.9-113.1-46.9l-11.6-11.6C77.5 429.5 64 396.9 64 363l0-27c0-32.7 24.6-59.7 56.3-63.5z"/></svg>
-            </div>
-            <div class="bottom-nav-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="28px" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
-            </div>
+        <div id="info-" class="bottom-nav-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="28px"
+                viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                <path
+                    d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
+            </svg>
+        </div>
+        <div id="home-" class="bottom-nav-btn center-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="36px" width="36px"
+                viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                <path fill="#fff"
+                    d="M224 0c17.7 0 32 14.3 32 32l0 208-64 0 0-208c0-17.7 14.3-32 32-32zm96 160c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32zm64 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64zM93.3 51.2L175.9 240l-69.9 0L34.7 76.8C27.6 60.6 35 41.8 51.2 34.7s35.1 .3 42.1 16.5zm27 221.3l-.2-.5 69.9 0 26.1 0c22.1 0 40 17.9 40 40s-17.9 40-40 40l-56 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l56 0c39.8 0 72-32.2 72-72l0-.6c9.4 5.4 20.3 8.6 32 8.6c13.2 0 25.4-4 35.6-10.8c8.7 24.9 32.5 42.8 60.4 42.8c11.7 0 22.6-3.1 32-8.6l0 8.6c0 88.4-71.6 160-160 160l-61.7 0c-42.4 0-83.1-16.9-113.1-46.9l-11.6-11.6C77.5 429.5 64 396.9 64 363l0-27c0-32.7 24.6-59.7 56.3-63.5z" />
+            </svg>
+        </div>
+        <div id="settings-" class="bottom-nav-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="28px"
+                viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                <path
+                    d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z" />
+            </svg>
+        </div>
 
     </div>
     <script>
+
         var speechSupported = true
         var prevSpeech = ""
 
@@ -187,7 +204,9 @@
     </script>
 
     <script type="module">
-
+        document.getElementById("info-").addEventListener("click", switchPage.bind(null, "info-"));
+        document.getElementById("home-").addEventListener("click", switchPage.bind(null, "home-"));
+        document.getElementById("settings-").addEventListener("click", switchPage.bind(null, "settings-"));
 
         import { HandLandmarker, FilesetResolver } from "http://127.0.0.1:8125/assets/static/tasks-vision@0.10.0" // For Android
         //import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0"; // For Web
@@ -199,7 +218,7 @@
         var last_letter_time = 0
         var is_first_run = 1
         const letter_list = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
-        const phrase_list = [" Good"," Hello", " How're"," I'm", " Thanks", " You"]
+        const phrase_list = [" Good", " Hello", " How're", " I'm", " Thanks", " You"]
         var index_list = letter_list
         // Before we can use HandLandmarker class we must wait for it to finish
         // loading. Machine Learning models can be large and take a moment to
@@ -229,15 +248,15 @@
         /********************************************************************
         // Continuously grab images
         ********************************************************************/
-       document.getElementById("modeSelector").addEventListener('click', function(){
+        document.getElementById("modeSelector").addEventListener('click', function () {
             document.getElementById('modeSelector').classList.toggle('right')
             var modeState = Array.from(document.getElementById('modeSelector').classList).includes('right')
             console.log("swicth", modeState)
-            if(modeState){
+            if (modeState) {
                 console.log("word")
                 objectDetector = wordDetector
                 index_list = phrase_list
-            }else{
+            } else {
                 console.log("letter")
                 objectDetector = letterDetector
                 index_list = letter_list
@@ -246,7 +265,7 @@
         var global_res = 0;
         const video = document.getElementById("webcam");
         const canvasElement = document.getElementById("output_canvas");
-        const canvasCtx = canvasElement.getContext("2d");
+        const canvasCtx = canvasElement.getContext("2d", { willReadFrequently: true });
         var x_array = []
         var y_array = []
         var video_facing_mode = "user"
@@ -296,6 +315,32 @@
             // getUsermedia parameters.
             load_camera()
         }
+
+        function switchPage(elem) {
+            var pH = document.getElementById("home-page")
+            var pI = document.getElementById("info-page")
+            var pS = document.getElementById("settings-page")
+
+            pH.style.display = "none"
+            pI.style.display = "none"
+            pS.style.display = "none"
+
+            document.getElementById(elem + "page").style.display = "block"
+            if (elem != "home-") {
+                webcamRunning = false
+                document.getElementById("webcamButton").style = "display:block"
+                document.getElementById("switch-camera").style.display = "none"
+                document.getElementById("mode-switch").style.display = "none"
+                var canvas=document.getElementById("output_canvas")
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            }else{
+                var canvas=document.getElementById("output_canvas")
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+
         function load_camera() {
             const constraints = {
                 video: {
@@ -354,7 +399,7 @@
                     var current_result = "_"
                     var previous_result = document.getElementById("predicted_result").innerText
                     document.getElementById("predicted_result").innerText = current_result
-                    
+
 
                     if (previous_result == current_result) {
                         if (current_time - last_letter_time > 1000) {
@@ -567,7 +612,7 @@
             predict(tf.expandDims(predictionInput, 0));
         }
         async function predict(inputTensor) {
-            
+
             console.log(index_list[0])
             objectDetector.then(function (res) {
                 var prediction = res.predict(inputTensor);
@@ -577,10 +622,10 @@
                 var previous_result = document.getElementById("predicted_result").innerText
                 document.getElementById("predicted_result").innerText = current_result
                 var current_time = Math.round(Date.now())
-                if (index_list[0]==" Good"){
-                    previous_result = " "+previous_result
+                if (index_list[0] == " Good") {
+                    previous_result = " " + previous_result
                 }
-                console.log("p:",previous_result, "c:",current_result)
+                console.log("p:", previous_result, "c:", current_result)
                 if (previous_result == current_result) {
                     if (current_time - last_letter_time > 1000) {
                         last_letter_time = current_time
@@ -626,7 +671,7 @@
             canvasCtx.stroke();
         }
         function calculateCanvasBrightness(canvas) {
-            const context = canvas.getContext('2d');
+            const context = canvas.getContext('2d', { willReadFrequently: true });
 
             // Get the image data from the canvas
             const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
