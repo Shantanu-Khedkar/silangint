@@ -72,7 +72,7 @@
             </div>
             <div class="wrapper_text">
                 <textarea id="text" onkeyup="set_output_array(this.value)"></textarea>
-                <button id="text-to-speech" onclick="speak(document.getElementById('text').value)">
+                <button id="speakButton" onclick="speak(document.getElementById('text').value)">
                     <span>Listen 🔊</span>
                 </button>
 
@@ -83,27 +83,107 @@
             </div>
         </center>
     </section>
-    <section id="info-page">infopage</section>
-    <section id="settings-page">settingspage</section>
+    <section id="info-page" style="display:none; padding: 10px;">
+        <center>
+
+            <svg width="77.5" height="103" viewBox="0 0 310 412" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g filter="url(#filter0_d_21435_307)">
+                    <path
+                        d="M186.81 198.496C176.153 230.73 130.699 230.73 120.042 198.496C118.566 194.034 117.995 189.322 118.361 184.635L129.694 27.7729C130.663 15.3457 140.999 5.75757 153.426 5.75757C165.852 5.75757 176.188 15.3457 177.158 27.7729L188.491 184.635C188.857 189.322 188.285 194.034 186.81 198.496Z"
+                        fill="#FF6E7D" />
+                    <path
+                        d="M129.248 210.461C131.138 242.358 93.345 260.329 69.9261 238.67C65.7586 234.815 62.575 230.013 60.6432 224.667L21.653 116.772C17.3477 104.858 22.7777 91.6137 34.1929 86.1855C45.6081 80.7572 59.2664 84.9246 65.7351 95.8096L124.318 194.388C127.221 199.272 128.911 204.784 129.248 210.461Z"
+                        fill="#FF6E7D" />
+                    <path
+                        d="M92.2772 198.028C93.9837 196.578 95.8085 195.273 97.7326 194.129L171.089 150.508C188.74 140.012 211.322 151.175 213.777 171.611C214.485 177.507 217.012 183.034 221.005 187.418L268.354 239.422C278.948 251.057 281.761 267.839 275.544 282.309L245.615 351.969C239.301 366.663 224.879 376.182 208.928 376.182H97.9241C81.9729 376.182 67.5505 366.663 61.2371 351.969L32.802 285.787C25.8462 269.597 30.2544 250.749 43.6623 239.352L92.2772 198.028Z"
+                        fill="#FF6E7D" />
+                    <path
+                        d="M55.1238 304.632C26.6986 296.743 20.0237 259.356 43.9529 242.062C49.3081 238.192 55.6418 235.913 62.2284 235.486L152.085 229.664C164.75 228.844 176.01 237.693 178.247 250.224C180.485 262.756 172.986 274.975 160.824 278.614L74.5386 304.437C68.2137 306.33 61.4852 306.397 55.1238 304.632Z"
+                        fill="#D6505E" />
+                    <path
+                        d="M239.546 153.001C228.433 125.986 190.518 125.338 178.413 151.957C176.038 157.178 175.042 162.922 175.519 168.637L183.682 266.336C184.68 278.282 194.526 287.521 206.477 287.725C218.427 287.929 228.609 279.033 230.048 267.128L241.82 169.769C242.509 164.074 241.726 158.3 239.546 153.001Z"
+                        fill="#D6505E" />
+                    <path
+                        d="M286.006 191.73C274.39 169.568 243.251 168.174 229.541 189.203C225.491 195.415 223.646 202.808 224.305 210.184L229.849 272.21C230.925 284.253 240.697 293.621 252.745 294.16C264.794 294.699 275.429 286.245 277.666 274.35L289.188 213.088C290.559 205.803 289.437 198.277 286.006 191.73Z"
+                        fill="#A8404B" />
+                </g>
+                <defs>
+                    <filter id="filter0_d_21435_307" x="0.181641" y="0.757568" width="309.576" height="410.424"
+                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha" />
+                        <feOffset dy="15" />
+                        <feGaussianBlur stdDeviation="10" />
+                        <feComposite in2="hardAlpha" operator="out" />
+                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_21435_307" />
+                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_21435_307" result="shape" />
+                    </filter>
+                </defs>
+            </svg>
+            <h1>SpeakSign</h1>
+        </center>
+        <hr>
+        <div class="about-card">
+            <span>Version</span>
+
+            <span>1.0.0</span>
+        </div>
+        <div class="about-card">
+            <span>Source</span>
+            <span>https://github.com/Shantanu-Khedkar/silangint</span>
+        </div>
+        <div class="about-card">
+            <span>Author</span>
+            <span>Shantanu Khedkar</span>
+        </div>
+        <div class="about-card">
+            <img src="http://127.0.0.1:8125/assets/static/ASL.png" style="height:auto; width:auto; margin: -5px"></img>
+        </div>
+
+    </section>
+    <section id="settings-page" style="display:none">
+        <center>
+            <h1>Settings</h1>
+        </center>
+        <form id="speechForm">
+            <div class="about-card">
+                <label for="language">Select Language:</label><br>
+                <select id="language"></select>
+            </div>
+            <div class="about-card">
+                <label for="voice">Select Voice:</label><br>
+                <select id="voice"></select>
+            </div>
+            <div class="about-card">
+                <label for="rate">Rate:</label><br>
+                <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1"><br>
+                <span id="rateValue">1</span>
+            </div>
+            <div class="about-card">
+                <label for="pitch">Pitch:</label>
+                <input type="range" id="pitch" min="0" max="2" step="0.1" value="1"><br>
+                <span id="pitchValue">1</span>
+            </div>
+        </form>
+
+    </section>
     <div class="bottom-nav">
         <div id="info-" class="bottom-nav-btn">
             <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="28px"
                 viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                <path
+                <path fill="#5d5d5d"
                     d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
             </svg>
         </div>
         <div id="home-" class="bottom-nav-btn center-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" height="36px" width="36px"
-                viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                <path fill="#fff"
-                    d="M224 0c17.7 0 32 14.3 32 32l0 208-64 0 0-208c0-17.7 14.3-32 32-32zm96 160c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32zm64 64c0-17.7 14.3-32 32-32s32 14.3 32 32l0 64c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-64zM93.3 51.2L175.9 240l-69.9 0L34.7 76.8C27.6 60.6 35 41.8 51.2 34.7s35.1 .3 42.1 16.5zm27 221.3l-.2-.5 69.9 0 26.1 0c22.1 0 40 17.9 40 40s-17.9 40-40 40l-56 0c-8.8 0-16 7.2-16 16s7.2 16 16 16l56 0c39.8 0 72-32.2 72-72l0-.6c9.4 5.4 20.3 8.6 32 8.6c13.2 0 25.4-4 35.6-10.8c8.7 24.9 32.5 42.8 60.4 42.8c11.7 0 22.6-3.1 32-8.6l0 8.6c0 88.4-71.6 160-160 160l-61.7 0c-42.4 0-83.1-16.9-113.1-46.9l-11.6-11.6C77.5 429.5 64 396.9 64 363l0-27c0-32.7 24.6-59.7 56.3-63.5z" />
-            </svg>
+            <img src="http://127.0.0.1:8125/assets/static/logo_sil.svg" height="48" width="48px"></img>
         </div>
         <div id="settings-" class="bottom-nav-btn">
             <svg xmlns="http://www.w3.org/2000/svg" height="28px" width="28px"
                 viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                <path
+                <path fill="#5d5d5d"
                     d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z" />
             </svg>
         </div>
@@ -115,6 +195,93 @@
         var prevSpeech = ""
 
         logUI = document.getElementById("logUI")
+        const speechSynthesis = window.speechSynthesis;
+        const voiceSelect = document.getElementById('voice');
+        const textInput = document.getElementById('text');
+        const languageSelect = document.getElementById('language');
+        const speakButton = document.getElementById('speakButton');
+        const rateInput = document.getElementById('rate');
+        const pitchInput = document.getElementById('pitch');
+        const rateValue = document.getElementById('rateValue');
+        const pitchValue = document.getElementById('pitchValue');
+
+        let voices = [];
+
+        const languageNames = {
+            'en-US': 'English (US)',
+            'en-GB': 'English (UK)',
+            'es-ES': 'Spanish (Spain)',
+            'fr-FR': 'French (France)',
+            'de-DE': 'German (Germany)',
+            'it-IT': 'Italian (Italy)',
+            'ja-JP': 'Japanese (Japan)',
+            'zh-CN': 'Chinese (China)',
+            'ur': 'Urdu',
+        };
+
+        function populateVoiceList() {
+            voices = speechSynthesis.getVoices();
+            updateLanguageList();
+            updateVoiceList();
+        }
+        async function populateTTWVoices() {
+            const url = "http://127.0.0.1:8125/assets/static/voicesList.txt";
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+
+                var voicesList = await response.text();
+                 voicesList = (voicesList.split('\n'));
+                voicesList.forEach(voice =>{
+                    const option = document.createElement('option');
+                    option.value = voice;
+                    option.textContent = voice;
+                    voiceSelect.appendChild(option);
+                })
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+        function getBaseLanguageCode(lang) {
+            return lang.split('-').slice(0, 2).join('-');
+        }
+
+        function updateLanguageList() {
+            const uniqueLanguages = new Set(voices.map(voice => getBaseLanguageCode(voice.lang)));
+            languageSelect.innerHTML = '';
+
+            Object.keys(languageNames).forEach(lang => {
+                const option = document.createElement('option');
+                option.value = lang;
+                option.textContent = languageNames[lang];
+                languageSelect.appendChild(option);
+            });
+
+            uniqueLanguages.forEach(lang => {
+                if (!languageNames[lang]) {
+                    const option = document.createElement('option');
+                    option.value = lang;
+                    option.textContent = lang;
+                    languageSelect.appendChild(option);
+                }
+            });
+        }
+
+        function updateVoiceList() {
+            const selectedLanguage = languageSelect.value;
+            voiceSelect.innerHTML = '';
+
+            voices.forEach((voice) => {
+                if (getBaseLanguageCode(voice.lang) === selectedLanguage) {
+                    const option = document.createElement('option');
+                    option.value = voice.name;
+                    option.textContent = `${voice.name} (${voice.lang})`;
+                    voiceSelect.appendChild(option);
+                }
+            });
+        }
 
         function logMessage(msg) {
             const span = document.createElement('span');
@@ -141,34 +308,57 @@
         };
 
 
-        var synthesis = window.speechSynthesis;
+
 
         if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = () => {
+                populateVoiceList();
+            };
 
-            var synthesis = window.speechSynthesis;
+            languageSelect.addEventListener('change', updateVoiceList);
 
-            // Get the first `en` language voice in the list
-            var voice = synthesis.getVoices().filter(function (voice) {
-                return voice.lang === 'en';
-            })[0];
+            rateInput.addEventListener('input', () => {
+                rateValue.textContent = rateInput.value;
+            });
 
+            pitchInput.addEventListener('input', () => {
+                pitchValue.textContent = pitchInput.value;
+            });
+
+            speakButton.addEventListener('click', () => {
+                const utterance = new SpeechSynthesisUtterance(textInput.value);
+                const selectedVoice = voices.find(voice => voice.name === voiceSelect.value);
+                utterance.voice = selectedVoice;
+                utterance.rate = rateInput.value;
+                utterance.pitch = pitchInput.value;
+                speechSynthesis.speak(utterance);
+            });
+
+            populateVoiceList()
             // Create an utterance object ⣿
 
         } else {
             speechSupported = false;
             console.log('Text-to-speech not supported.');
+
+            languageSelect.innerHTML = '';
+            const option = document.createElement('option');
+            option.value = "en";
+            option.textContent = "English";
+            languageSelect.appendChild(option);
+            populateTTWVoices()
         }
 
-        function speak(text) {
+        function speak(toSpeak) {
             console.log("speech api support", speechSupported)
             console.log("condition: ", !speechSupported)
             console.log("condition2: ", speechSupported == false)
             console.log("speech api support", speechSupported)
             if (!speechSupported) {
                 const audioPlayer = document.getElementById('audioPlayer');
-                if (prevSpeech != text) {
-                    prevSpeech = text
-                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' + text; // Set the audio source
+                if (prevSpeech != toSpeak) {
+                    prevSpeech = toSpeak
+                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' +encodeURIComponent(toSpeak)+'&v='+encodeURIComponent("en"+voiceSelect.value)+'&r='+ Math.round(rateInput.value * 7.5).toString()+'&p='+Math.round(pitchInput.value * 49.5).toString(); // Set the audio source
                     console.log("Set src: ", audioPlayer.src)
                 }
 
@@ -182,12 +372,7 @@
                         prevSpeech = ''
                     });
             } else if ('speechSynthesis' in window) {
-                var utterance = new SpeechSynthesisUtterance(text);
-                utterance.voice = voice;
-                utterance.pitch = 0.6;
-                utterance.rate = 0.8;
-                utterance.volume = 0.8;
-                synthesis.speak(utterance);
+                console.log("probably spoken")
             } else {
                 console.log("Text to speech is now not supported")
             }
@@ -331,11 +516,11 @@
                 document.getElementById("webcamButton").style = "display:block"
                 document.getElementById("switch-camera").style.display = "none"
                 document.getElementById("mode-switch").style.display = "none"
-                var canvas=document.getElementById("output_canvas")
+                var canvas = document.getElementById("output_canvas")
                 const context = canvas.getContext('2d');
                 context.clearRect(0, 0, canvas.width, canvas.height);
-            }else{
-                var canvas=document.getElementById("output_canvas")
+            } else {
+                var canvas = document.getElementById("output_canvas")
                 const context = canvas.getContext('2d');
                 context.clearRect(0, 0, canvas.width, canvas.height);
             }

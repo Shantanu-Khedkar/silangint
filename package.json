@@ -1,7 +1,7 @@
 {
     "version": "1.0.0",
-    "name": "silangint",
-    "app-name": "silangint",
+    "name": "SpeakSign",
+    "app-name": "SpeakSign",
     "package-name": "webview",
     "project-type": "webview",
     "icon": "./assets/icon/icon.png",
@@ -18,8 +18,8 @@
         "start:dev": "node .",
         "build": "androidjs build"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "Shantanu Khedkar",
+    "license": "GPL-3.0",
     "dependencies": {
         "androidjs": "^2.0.2",
         "text2wav": "^0.0.14"

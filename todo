@@ -7,11 +7,11 @@ add model switching    |  ✔  |1  | -
 add predictive text    |     |2  |
 add speech-to-sign     |     |?  |
 add translation        |     |1  | -
-add page switching     |     |2  |
-add settings page      |     |3  |
-add info / help page   |     |3  |
-add loading page       |     |2  |
-update UI design       |     |?  |
+add page switching     |  ✔  |2  |
+add settings page      |  ✔  |3  |
+add info / help page   |  ✔  |3  |
+add loading page       |  ✔  |2  |
+update UI design       |  ✔  |?  |
 share android and web  |  ✔  |   |
 fix - camera switch    |  ✔  |   |
 fix - text-to-speach   |  ✔  |   |
@@ -22,8 +22,8 @@ add bottom-nav         |  ✔  |   |
 ——————————————————————————————
  ---- Project TODO --- |     |
 ——————————————————————————————
-Finalise Name          |     |
-Create Logo            |     |
+Finalise Name          |  ✔  |
+Create Logo            |  ✔  |
 Project Report         |     |
 Charts                 |     |
 Promotional Pamphlets  |     |

@@ -27,9 +27,9 @@ const server = http.createServer(async (request, response) => {
         console.log("speaking...")
         try {
             console.log(parsedUrl.query.t)
-            const content = await textToSpeech(parsedUrl.query.t)
+            const content = await textToSpeech(parsedUrl.query.t, parsedUrl.query.v, parsedUrl.query.r, parsedUrl.query.p)
             //console.log(content)
-            stringContent=JSON.stringify(content)
+            stringContent = JSON.stringify(content)
             response.writeHead(200, { 'Content-Type': 'audio/wav' });
             response.end(Buffer.from(content), 'utf-8');
         } catch (error) {
@@ -54,6 +54,9 @@ const server = http.createServer(async (request, response) => {
                 break;
             case '.png':
                 contentType = 'image/png';
+                break;
+            case '.svg':
+                contentType = 'image/svg+xml';
                 break;
             case '.jpg':
                 contentType = 'image/jpg';
@@ -89,7 +92,7 @@ back.on("appDir", function (appDir, userDir) {
     appDirPath = path.join(appDir)
     userDirPath = userDir
     back.send("gotAppDir", appDirPath)
-   
+
 })
 
 
@@ -98,8 +101,9 @@ back.on("isUp?", function (msg) {
     back.send("serverUp", server_started)
 })
 
-async function textToSpeech(text) {
-    return await text2wav(text)
+async function textToSpeech(text, voice, rate, pitch) {
+    console.log(voice)
+    return await text2wav(text, {voice: voice, wordGap: rate, pitch:pitch})
 }
 
 server.listen(8125, () => {
