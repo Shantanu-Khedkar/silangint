@@ -55,6 +55,11 @@ const server = http.createServer(async (request, response) => {
             response.end(Buffer.from(content), 'utf-8');
         } catch (error) {
             console.log("Error in speechAPI", error)
+            const content = await textToSpeech("Sorry, there was an error")
+            //console.log(content)
+            stringContent = JSON.stringify(content)
+            response.writeHead(200, { 'Content-Type': 'audio/wav' });
+            response.end(Buffer.from(content), 'utf-8');
         }
     } else {
 
@@ -122,7 +127,7 @@ back.on("isUp?", function (msg) {
     back.send("serverUp", server_started)
 })
 
-async function textToSpeech(text, voice, rate, pitch) {
+async function textToSpeech(text, voice="en+Andy", rate="7", pitch="45") {
     console.log(voice)
     return await text2wav(text, {voice: voice, wordGap: rate, pitch:pitch})
 }

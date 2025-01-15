@@ -155,31 +155,33 @@
         </div>
         <div class="about-card">
             <span>Source</span>
-            <span>https://github.com/Shantanu-Khedkar/silangint</span>
+            <span><a
+                    href="https://github.com/Shantanu-Khedkar/silangint" target="_blank">https://github.com/Shantanu-Khedkar/silangint</a></span>
         </div>
         <div class="about-card">
             <span>License</span>
-            <span>GPL-v3.0 - https://github.com/Shantanu-Khedkar/silangint/blob/master/LICENSE</span>
+            <span>GPL-v3.0 - <a
+                    href="https://github.com/Shantanu-Khedkar/silangint/blob/master/LICENSE" target="_blank">https://github.com/Shantanu-Khedkar/silangint/blob/master/LICENSE</a></span>
         </div>
         <div class="about-card">
             <span>Copyright Notice</span>
             <span>
                 SignSpeak - A Communicator For Signers
-               
+
                 Copyright (C) 2025 Shantanu Khedkar
-            
+
                 This program is free software: you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by
                 the Free Software Foundation, either version 3 of the License, or
                 (at your option) any later version.
-            
+
                 This program is distributed in the hope that it will be useful,
                 but WITHOUT ANY WARRANTY; without even the implied warranty of
-                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+                MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
                 GNU General Public License for more details.
-            
+
                 You should have received a copy of the GNU General Public License
-                along with this program.  If not, see https://www.gnu.org/licenses.
+                along with this program. If not, see https://www.gnu.org/licenses.
             </span>
         </div>
         <div class="about-card">
@@ -202,13 +204,13 @@
             </div>
             <div class="about-card">
                 <label for="rate">Rate:</label><br>
-                <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1"><br>
-                <span id="rateValue">1</span>
+                <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1">
+                <span style="display:none" id="rateValue">1</span>
             </div>
             <div class="about-card">
-                <label for="pitch">Pitch:</label>
-                <input type="range" id="pitch" min="0" max="2" step="0.1" value="1"><br>
-                <span id="pitchValue">1</span>
+                <label for="pitch">Pitch:</label><br>
+                <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
+                <span style="display:none" id="pitchValue">1</span>
             </div>
         </form>
 
@@ -277,8 +279,8 @@
                 }
 
                 var voicesList = await response.text();
-                 voicesList = (voicesList.split('\n'));
-                voicesList.forEach(voice =>{
+                voicesList = (voicesList.split('\n'));
+                voicesList.forEach(voice => {
                     const option = document.createElement('option');
                     option.value = voice;
                     option.textContent = voice;
@@ -402,7 +404,7 @@
                 const audioPlayer = document.getElementById('audioPlayer');
                 if (prevSpeech != toSpeak) {
                     prevSpeech = toSpeak
-                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' +encodeURIComponent(toSpeak)+'&v='+encodeURIComponent("en"+voiceSelect.value)+'&r='+ Math.round(rateInput.value * 7.5).toString()+'&p='+Math.round(pitchInput.value * 49.5).toString(); // Set the audio source
+                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' + encodeURIComponent(toSpeak) + '&v=' + encodeURIComponent("en+" + voiceSelect.value) + '&r=' + Math.round(rateInput.value * 7.5).toString() + '&p=' + Math.round(pitchInput.value * 49.5).toString(); // Set the audio source
                     console.log("Set src: ", audioPlayer.src)
                 }
 
@@ -477,7 +479,7 @@
         /********************************************************************
         // Continuously grab images
         ********************************************************************/
-        document.getElementById("modeSelector").addEventListener('click', function () {
+        document.getElementById("mode-switch").addEventListener('click', function () {
             document.getElementById('modeSelector').classList.toggle('right')
             var modeState = Array.from(document.getElementById('modeSelector').classList).includes('right')
             console.log("swicth", modeState)
@@ -571,6 +573,21 @@
         }
 
         function load_camera() {
+            try{
+            var stream = video.srcObject;
+            // now get all tracks
+            var tracks = stream.getTracks();
+            // now close each track by having forEach loop
+            tracks.forEach(function (track) {
+                // stopping every track
+                track.stop();
+            });
+            // assign null to srcObject of video
+            video.srcObject = null;
+        }catch (error) {
+                console.error(error.message);
+            }
+
             const constraints = {
                 video: {
                     facingMode: video_facing_mode
