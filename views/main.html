@@ -147,7 +147,7 @@
         <div class="about-card">
             <span>Version</span>
 
-            <span>1.0.0</span>
+            <span>1.2.0</span>
         </div>
         <div class="about-card">
             <span>Author</span>
@@ -155,13 +155,13 @@
         </div>
         <div class="about-card">
             <span>Source</span>
-            <span><a
-                    href="https://github.com/Shantanu-Khedkar/silangint" target="_blank">https://github.com/Shantanu-Khedkar/silangint</a></span>
+            <span><a href="https://github.com/Shantanu-Khedkar/silangint"
+                    target="_blank">https://github.com/Shantanu-Khedkar/silangint</a></span>
         </div>
         <div class="about-card">
             <span>License</span>
-            <span>GPL-v3.0 - <a
-                    href="https://github.com/Shantanu-Khedkar/silangint/blob/master/LICENSE" target="_blank">https://github.com/Shantanu-Khedkar/silangint/blob/master/LICENSE</a></span>
+            <span>GPL-v3.0 - <a href="https://github.com/Shantanu-Khedkar/silangint/blob/master/LICENSE"
+                    target="_blank">https://github.com/Shantanu-Khedkar/silangint/blob/master/LICENSE</a></span>
         </div>
         <div class="about-card">
             <span>Copyright Notice</span>
@@ -254,15 +254,101 @@
         let voices = [];
 
         const languageNames = {
-            'en-US': 'English (US)',
-            'en-GB': 'English (UK)',
-            'es-ES': 'Spanish (Spain)',
-            'fr-FR': 'French (France)',
-            'de-DE': 'German (Germany)',
-            'it-IT': 'Italian (Italy)',
-            'ja-JP': 'Japanese (Japan)',
-            'zh-CN': 'Chinese (China)',
+            'en': '- English ',
+            'mra': '- Marathi',
+            'mr': '- Marathi',
+            'hi': '- Hindi',
+            'es': 'Spanish',
+            'fr': 'French',
+            'de': 'German',
+            'it': 'Italian',
+            'af': 'Afrikaans',
+            'am': 'Amharic',
+            'an': 'Aragonese',
+            'ar': 'Arabic',
+            'as': 'Assamese',
+            'az': 'Azerbaijani',
+            'bg': 'Bulgarian',
+            'bn': 'Bengali',
+            'bpy': 'Bishnupriya Manipuri',
+            'bs': 'Bosnian',
+            'ca': 'Catalan',
+            'cs': 'Czech',
+            'cy': 'Welsh',
+            'da': 'Danish',
+            'de': 'German',
+            'el': 'Greek',
+            'eo': 'Esperanto',
+            'es': 'Spanish',
+            'et': 'Estonian',
+            'eu': 'Basque',
+            'fa': 'Persian',
+            'fi': 'Finnish',
+            'fr': 'French',
+            'ga': 'Irish',
+            'gd': 'Scottish Gaelic',
+            'gn': 'Guarani',
+            'grc': 'Ancient Greek',
+            'gu': 'Gujarati',
+            'hak': 'Hakka',
+            'hr': 'Croatian',
+            'ht': 'Haitian Creole',
+            'hu': 'Hungarian',
+            'hy': 'Armenian',
+            'ia': 'Interlingua',
+            'id': 'Indonesian',
+            'is': 'Icelandic',
+            'it': 'Italian',
+            'ja': 'Japanese',
+            'jbo': 'Lojban',
+            'ka': 'Georgian',
+            'kk': 'Kazakh',
+            'kl': 'Kalaallisut',
+            'kn': 'Kannada',
+            'ko': 'Korean',
+            'kok': 'Konkani',
+            'ku': 'Kurdish',
+            'ky': 'Kyrgyz',
+            'la': 'Latin',
+            'lfn': 'Lingua Franca Nova',
+            'lt': 'Lithuanian',
+            'lv': 'Latvian',
+            'mi': 'Māori',
+            'mk': 'Macedonian',
+            'ml': 'Malayalam',
+            'ms': 'Malay',
+            'mt': 'Maltese',
+            'my': 'Burmese',
+            'nci': 'Navajo',
+            'ne': 'Nepali',
+            'nl': 'Dutch',
+            'no': 'Norwegian',
+            'om': 'Oromo',
+            'or': 'Odia',
+            'pa': 'Punjabi',
+            'pap': 'Papiamento',
+            'pl': 'Polish',
+            'pt': 'Portuguese',
+            'quc': 'K’iche’',
+            'ro': 'Romanian',
+            'ru': 'Russian',
+            'sd': 'Sindhi',
+            'shn': 'Shan',
+            'si': 'Sinhala',
+            'sk': 'Slovak',
+            'sl': 'Slovenian',
+            'sq': 'Albanian',
+            'sr': 'Serbian',
+            'sv': 'Swedish',
+            'sw': 'Swahili',
+            'ta': 'Tamil',
+            'te': 'Telugu',
+            'tn': 'Tswana',
+            'tr': 'Turkish',
+            'tt': 'Tatar',
             'ur': 'Urdu',
+            'vi': 'Vietnamese'
+
         };
 
         function populateVoiceList() {
@@ -279,7 +365,8 @@
                 }
 
                 var voicesList = await response.text();
-                voicesList = (voicesList.split('\n'));
+                voicesList = voicesList.split('\n')
+                voicesList.pop()
                 voicesList.forEach(voice => {
                     const option = document.createElement('option');
                     option.value = voice;
@@ -290,8 +377,53 @@
                 console.error(error.message);
             }
         }
+        async function populateTTWLangs() {
+            const url = "http://127.0.0.1:8125/assets/static/langList.txt";
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+
+                var langsList = await response.text();
+                langsList = langsList.split('\n')
+                langsList.pop()
+                unknownLangs = []
+                langsList.forEach(lang => {
+                    if (!languageNames[lang]) {
+                        unknownLangs.push(lang)
+                    } else {
+                        const option = document.createElement('option');
+                        option.value = lang;
+                        option.textContent = languageNames[lang];
+                        languageSelect.appendChild(option);
+                    }
+                })
+                unknownLangs.forEach(lang => {
+                    const option = document.createElement('option');
+                    option.value = lang;
+                    option.textContent = lang;
+                    languageSelect.appendChild(option);
+                })
+            } catch (error) {
+                console.error(error.message);
+            }
+
+            const optionNodes = Array.from(languageSelect.children);
+            const comparator = new Intl.Collator('en'.slice(0, 2)).compare;
+            optionNodes.sort((a, b) => comparator(a.textContent, b.textContent));
+            optionNodes.forEach((option) => languageSelect.appendChild(option));
+            languageSelect.children[0].selected = "selected"
+        }
+
         function getBaseLanguageCode(lang) {
             return lang.split('-').slice(0, 2).join('-');
+        }
+        function getBaseBaseLanguageCode(lang) {
+            return lang.split('-').slice(0, 1).join('-');
+        }
+        function getModifierLanguageCode(lang) {
+            return lang.split('-').slice(1, 3).join('-');
         }
 
         function updateLanguageList() {
@@ -299,20 +431,36 @@
             languageSelect.innerHTML = '';
 
             Object.keys(languageNames).forEach(lang => {
-                const option = document.createElement('option');
-                option.value = lang;
-                option.textContent = languageNames[lang];
-                languageSelect.appendChild(option);
+                if (uniqueLanguages.has(lang)) {
+                    const option = document.createElement('option');
+                    option.value = lang;
+                    option.textContent = languageNames[lang];
+                    languageSelect.appendChild(option);
+                }
             });
 
             uniqueLanguages.forEach(lang => {
                 if (!languageNames[lang]) {
-                    const option = document.createElement('option');
-                    option.value = lang;
-                    option.textContent = lang;
-                    languageSelect.appendChild(option);
+                    if (!languageNames[getBaseBaseLanguageCode(lang)]) {
+                        const option = document.createElement('option');
+                        option.value = lang;
+                        option.textContent = lang;
+                        languageSelect.appendChild(option);
+                    }
+                    else {
+                        const option = document.createElement('option');
+                        option.value = lang;
+                        option.textContent = `${languageNames[getBaseBaseLanguageCode(lang)]} (${getModifierLanguageCode(lang)})`;
+                        languageSelect.appendChild(option);
+                    }
                 }
             });
+
+            const optionNodes = Array.from(languageSelect.children);
+            const comparator = new Intl.Collator('en'.slice(0, 2)).compare;
+            optionNodes.sort((a, b) => comparator(a.textContent, b.textContent));
+            optionNodes.forEach((option) => languageSelect.appendChild(option));
+            languageSelect.children[0].selected = "selected"
         }
 
         function updateVoiceList() {
@@ -387,11 +535,7 @@
             speechSupported = false;
             console.log('Text-to-speech not supported.');
 
-            languageSelect.innerHTML = '';
-            const option = document.createElement('option');
-            option.value = "en";
-            option.textContent = "English";
-            languageSelect.appendChild(option);
+            populateTTWLangs()
             populateTTWVoices()
         }
 
@@ -404,7 +548,7 @@
                 const audioPlayer = document.getElementById('audioPlayer');
                 if (prevSpeech != toSpeak) {
                     prevSpeech = toSpeak
-                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' + encodeURIComponent(toSpeak) + '&v=' + encodeURIComponent("en+" + voiceSelect.value) + '&r=' + Math.round(rateInput.value * 7.5).toString() + '&p=' + Math.round(pitchInput.value * 49.5).toString(); // Set the audio source
+                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' + encodeURIComponent(toSpeak) + '&v=' + encodeURIComponent(languageSelect.value + "+" + voiceSelect.value) + '&r=' + Math.round(rateInput.value * 7.5).toString() + '&p=' + Math.round(pitchInput.value * 49.5).toString(); // Set the audio source
                     console.log("Set src: ", audioPlayer.src)
                 }
 
@@ -573,18 +717,18 @@
         }
 
         function load_camera() {
-            try{
-            var stream = video.srcObject;
-            // now get all tracks
-            var tracks = stream.getTracks();
-            // now close each track by having forEach loop
-            tracks.forEach(function (track) {
-                // stopping every track
-                track.stop();
-            });
-            // assign null to srcObject of video
-            video.srcObject = null;
-        }catch (error) {
+            try {
+                var stream = video.srcObject;
+                // now get all tracks
+                var tracks = stream.getTracks();
+                // now close each track by having forEach loop
+                tracks.forEach(function (track) {
+                    // stopping every track
+                    track.stop();
+                });
+                // assign null to srcObject of video
+                video.srcObject = null;
+            } catch (error) {
                 console.error(error.message);
             }
 
