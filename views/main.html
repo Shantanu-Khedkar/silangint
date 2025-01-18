@@ -154,6 +154,9 @@
             <span>Shantanu Khedkar</span>
         </div>
         <div class="about-card">
+            <img src="http://127.0.0.1:8125/assets/static/ASL.png" style="height:auto; width:auto; margin: -5px"></img>
+        </div>
+        <div class="about-card">
             <span>Source</span>
             <span><a href="https://github.com/Shantanu-Khedkar/silangint"
                     target="_blank">https://github.com/Shantanu-Khedkar/silangint</a></span>
@@ -167,53 +170,89 @@
             <span>Copyright Notice</span>
             <span>
                 SignSpeak - A Communicator For Signers
-
+                <br>
                 Copyright (C) 2025 Shantanu Khedkar
-
+                <br>
                 This program is free software: you can redistribute it and/or modify
                 it under the terms of the GNU General Public License as published by
                 the Free Software Foundation, either version 3 of the License, or
                 (at your option) any later version.
-
+                <br>
                 This program is distributed in the hope that it will be useful,
                 but WITHOUT ANY WARRANTY; without even the implied warranty of
                 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
                 GNU General Public License for more details.
-
+                <br>
                 You should have received a copy of the GNU General Public License
                 along with this program. If not, see https://www.gnu.org/licenses.
             </span>
         </div>
-        <div class="about-card">
-            <img src="http://127.0.0.1:8125/assets/static/ASL.png" style="height:auto; width:auto; margin: -5px"></img>
-        </div>
 
     </section>
     <section id="settings-page" style="display:none">
-        <center>
-            <h1>Settings</h1>
-        </center>
-        <form id="speechForm">
-            <div class="about-card">
-                <label for="language">Select Language:</label><br>
-                <select id="language"></select>
+        <div style="display:inline-flex; align-items:center; gap:10px; padding:12px; margin-bottom: 24px; margin-top: 16px;">
+            <div style="padding:10px; display: inherit;" onclick="settingsBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+        </div>
+            <span class="settings-header">Settings</span>
             </div>
-            <div class="about-card">
-                <label for="voice">Select Voice:</label><br>
-                <select id="voice"></select>
-            </div>
-            <div class="about-card">
-                <label for="rate">Rate:</label><br>
-                <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1">
-                <span style="display:none" id="rateValue">1</span>
-            </div>
-            <div class="about-card">
-                <label for="pitch">Pitch:</label><br>
-                <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
-                <span style="display:none" id="pitchValue">1</span>
-            </div>
+        <div class="settingsFormWrap">
+            <form id="settingsForm">
+                <div class="about-card" onclick="showSubSettings('speechForm', this.children[0].children[0].innerText)">
+                    <span class="settings-btn"><span>Text-to-Speech</span><br><svg width="24px" height="24px"
+                            viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path
+                                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
+                        </svg></span>
+                </div>
+                <div class="about-card">
+                    <span class="settings-btn"><span>Translation</span><br><svg width="24px" height="24px"
+                            viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path
+                                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
+                        </svg></span>
+                </div>
+                <div class="about-card">
+                    <span class="settings-btn"><span>App Permissions</span><br><svg width="24px" height="24px"
+                            viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path
+                                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
+                        </svg></span>
+                </div>
+        </div>
         </form>
-
+        </div>
+        <div class="subSettingsSpeech subSettings">
+            <form id="speechForm" style="display:none;" >
+                <div class="about-card">
+                    <label for="language">Select Language:</label>
+                    <select id="language"></select>
+                </div>
+                <div class="about-card">
+                    <label for="voice">Select Voice:</label>
+                    <select id="voice"></select>
+                </div>
+                <div class="about-card">
+                    <label for="rate">Rate:</label>
+                    <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1">
+                    <span style="display:none" id="rateValue">1</span>
+                </div>
+                <div class="about-card">
+                    <label for="pitch">Pitch:</label>
+                    <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
+                    <span style="display:none" id="pitchValue">1</span>
+                </div>
+                <div class="about-card">
+                    <label for="testText">Test Voice:</label>
+                    <input id="testText" value="Hello, this is a test!" placeholder="Enter test sentence..."
+                        onkeyup="set_output_array(this.value)"></input>
+                    <button type="button" id="testSpeakButton"
+                        onclick="document.getElementById('text').value = document.getElementById('testText').value; document.getElementById('speakButton').click()">
+                        <a>Listen 🔊</a>
+                    </button>
+                </div>
+            </form>
+        </div>
     </section>
     <div class="bottom-nav">
         <div id="info-" class="bottom-nav-btn">
@@ -239,6 +278,7 @@
 
         var speechSupported = true
         var prevSpeech = ""
+        var prevSettings = ""
 
         logUI = document.getElementById("logUI")
         const speechSynthesis = window.speechSynthesis;
@@ -477,6 +517,26 @@
             });
         }
 
+        function showSubSettings(form_id, text) {
+            document.getElementsByClassName("settingsFormWrap")[0].style.display = "none";
+            
+            console.log(form_id)
+            document.getElementById(form_id).style.display="block"
+            document.getElementById(form_id).parentElement.style.display="block"
+            document.getElementsByClassName("settings-header")[0].innerText=text
+              
+        }
+        function settingsBack(){
+            if(document.getElementsByClassName("settingsFormWrap")[0].style.display=="none"){
+            Array.from(document.getElementsByClassName("subSettings")).forEach(elem =>{
+                elem.style.display="none"
+            })
+            document.getElementsByClassName("settingsFormWrap")[0].style.display="block"
+            document.getElementsByClassName("settings-header")[0].innerText="Settings"
+            }else{
+                document.getElementById("home-").click()
+            }
+        }
         function logMessage(msg) {
             const span = document.createElement('span');
             span.textContent = msg;
@@ -546,9 +606,11 @@
             console.log("speech api support", speechSupported)
             if (!speechSupported) {
                 const audioPlayer = document.getElementById('audioPlayer');
-                if (prevSpeech != toSpeak) {
+                var currSettings = '&v=' + encodeURIComponent(languageSelect.value + "+" + voiceSelect.value) + '&r=' + Math.round(rateInput.value * 7.5).toString() + '&p=' + Math.round(pitchInput.value * 49.5).toString()
+                if ((prevSpeech != toSpeak) || (prevSettings != currSettings)) {
                     prevSpeech = toSpeak
-                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' + encodeURIComponent(toSpeak) + '&v=' + encodeURIComponent(languageSelect.value + "+" + voiceSelect.value) + '&r=' + Math.round(rateInput.value * 7.5).toString() + '&p=' + Math.round(pitchInput.value * 49.5).toString(); // Set the audio source
+                    prevSettings = currSettings
+                    audioPlayer.src = 'http://127.0.0.1:8125/speech?t=' + encodeURIComponent(toSpeak) + currSettings
                     console.log("Set src: ", audioPlayer.src)
                 }
 
@@ -574,6 +636,10 @@
             console.log(text)
             word_list = text.split("");
             console.log(word_list)
+        }
+        function clear_output_array() {
+            word_list = [];
+            textInput.value = ""
         }
 
     </script>
@@ -692,6 +758,8 @@
         }
 
         function switchPage(elem) {
+            prevSpeech = ""
+
             var pH = document.getElementById("home-page")
             var pI = document.getElementById("info-page")
             var pS = document.getElementById("settings-page")
@@ -710,6 +778,8 @@
                 const context = canvas.getContext('2d');
                 context.clearRect(0, 0, canvas.width, canvas.height);
             } else {
+                textInput.value = ""
+                clear_output_array()
                 var canvas = document.getElementById("output_canvas")
                 const context = canvas.getContext('2d');
                 context.clearRect(0, 0, canvas.width, canvas.height);

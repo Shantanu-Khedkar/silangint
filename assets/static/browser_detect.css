@@ -7,7 +7,6 @@ body {
   color: #3d3d3d;
   --mdc-theme-primary: #007f8b;
   --mdc-theme-on-primary: #f1f3f4;
-  margin-left: 0px;
 }
 
 .container {
@@ -208,6 +207,7 @@ body {
   flex-direction: row;
   font-family: roboto;
   z-index:10;
+  left:0;
 }
 .bottom-nav-btn{
   flex-direction: row;
@@ -244,6 +244,11 @@ opacity: 1;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-weight: 700;
 }
+.about-card label:nth-child(1){
+  font-size: 20px;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 700;
+}
 .about-card span:nth-child(2){
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: 12px;
@@ -264,6 +269,7 @@ h1{
   padding-right: 10px;
 }
 
+
 select{
   margin-top: 5px;
   width:100%;
@@ -271,4 +277,57 @@ select{
   border: none;
   padding:5px;
   background-color: #d9d9d9;
+}
+#speechForm button{
+  margin-top: 5px;
+  width:100%;
+  border-radius: 5px;
+  border: none;
+  color:#fcfcfc;
+  padding:5px;
+  background-color: #f96a79;
+}
+#testText{
+  margin-top: 5px;
+  width:100%;
+  border-radius: 5px;
+  border: none;
+  resize: none;
+  padding:5px;
+  background-color: #d9d9d9;
+}
+
+#settings-page{
+  position: relative;
+overflow-y: scroll;
+overflow-x: hidden;
+margin: -8px;
+padding-bottom: 20px;
+}
+.subSettingsSpeech{
+  position: relative;
+  transition: all 0.5s ease-out;
+}
+.settingsFormWrap{
+  position: relative;
+  left:0%;
+  transition: all 0.1s ease-out;
+}
+
+#settingsForm{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 700;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.settings-btn{
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-header{
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-weight: 700;
+  font-size: 30px;
 }
