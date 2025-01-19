@@ -26,8 +26,6 @@ const url = require('url')
 var back = require('androidjs').back;
 const text2wav = require('text2wav')
 
-
-
 var server_started = 0
 console.log("averyspecificstring");
 

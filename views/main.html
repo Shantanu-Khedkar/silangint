@@ -91,15 +91,35 @@
             </div>
             <div class="wrapper_text">
                 <textarea id="text" onkeyup="set_output_array(this.value)"></textarea>
-                <button id="speakButton" onclick="speak(document.getElementById('text').value)">
-                    <span>Listen 🔊</span>
-                </button>
+                <div class="textControls">
+                    <button id="undoButton" onclick="undo()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" width="16px"
+                            viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path fill="#fcfcfc"
+                                d="M576 128c0-35.3-28.7-64-64-64L205.3 64c-17 0-33.3 6.7-45.3 18.7L9.4 233.4c-6 6-9.4 14.1-9.4 22.6s3.4 16.6 9.4 22.6L160 429.3c12 12 28.3 18.7 45.3 18.7L512 448c35.3 0 64-28.7 64-64l0-256zM271 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z" />
+                        </svg>
+                    </button>
+                    <button id="speakButton" onclick="speak(document.getElementById('text').value)">
+                        <span>Listen</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" width="16px"
+                            viewBox="0 0 640 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path fill="#fcfcfc"
+                                d="M533.6 32.5C598.5 85.2 640 165.8 640 256s-41.5 170.7-106.4 223.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C557.5 398.2 592 331.2 592 256s-34.5-142.2-88.7-186.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM473.1 107c43.2 35.2 70.9 88.9 70.9 149s-27.7 113.8-70.9 149c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C475.3 341.3 496 301.1 496 256s-20.7-85.3-53.2-111.8c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zm-60.5 74.5C434.1 199.1 448 225.9 448 256s-13.9 56.9-35.4 74.5c-10.3 8.4-25.4 6.8-33.8-3.5s-6.8-25.4 3.5-33.8C393.1 284.4 400 271 400 256s-6.9-28.4-17.7-37.3c-10.3-8.4-11.8-23.5-3.5-33.8s23.5-11.8 33.8-3.5zM301.1 34.8C312.6 40 320 51.4 320 64l0 384c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352 64 352c-35.3 0-64-28.7-64-64l0-64c0-35.3 28.7-64 64-64l67.8 0L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3z" />
+                        </svg>
+                    </button>
+                    <button id="clearButton" onclick="clear_output_array()">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="16px" width="16px"
+                            viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                            <path fill="#fcfcfc"
+                                d="M135.2 17.7L128 32 32 32C14.3 32 0 46.3 0 64S14.3 96 32 96l384 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-96 0-7.2-14.3C307.4 6.8 296.3 0 284.2 0L163.8 0c-12.1 0-23.2 6.8-28.6 17.7zM416 128L32 128 53.2 467c1.6 25.3 22.6 45 47.9 45l245.8 0c25.3 0 46.3-19.7 47.9-45L416 128z" />
+                        </svg>
+                    </button>
+                </div>
 
                 <audio id="audioPlayer">-</audio>
             </div>
-            <div id="logUI">
 
-            </div>
+            <div id="logUI" style="display:none"></div>
         </center>
     </section>
     <section id="info-page" style="display:none; padding: 10px;">
@@ -190,69 +210,46 @@
 
     </section>
     <section id="settings-page" style="display:none">
-        <div style="display:inline-flex; align-items:center; gap:10px; padding:12px; margin-bottom: 24px; margin-top: 16px;">
+        <div
+            style="display:inline-flex; align-items:center; gap:10px; padding:12px; margin-bottom: 24px; margin-top: 16px;">
             <div style="padding:10px; display: inherit;" onclick="settingsBack()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
-        </div>
-            <span class="settings-header">Settings</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px"
+                    viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+                    <path
+                        d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z" />
+                </svg>
             </div>
-        <div class="settingsFormWrap">
-            <form id="settingsForm">
-                <div class="about-card" onclick="showSubSettings('speechForm', this.children[0].children[0].innerText)">
-                    <span class="settings-btn"><span>Text-to-Speech</span><br><svg width="24px" height="24px"
-                            viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                            <path
-                                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
-                        </svg></span>
-                </div>
-                <div class="about-card">
-                    <span class="settings-btn"><span>Translation</span><br><svg width="24px" height="24px"
-                            viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                            <path
-                                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
-                        </svg></span>
-                </div>
-                <div class="about-card">
-                    <span class="settings-btn"><span>App Permissions</span><br><svg width="24px" height="24px"
-                            viewBox="0 0 320 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
-                            <path
-                                d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" />
-                        </svg></span>
-                </div>
+            <span class="settings-header">Settings</span>
         </div>
+        <form id="speechForm" style="display:block;">
+            <div class="about-card">
+                <label for="language">Select Language:</label>
+                <select id="language"></select>
+            </div>
+            <div class="about-card">
+                <label for="voice">Select Voice:</label>
+                <select id="voice"></select>
+            </div>
+            <div class="about-card">
+                <label for="rate">Rate:</label>
+                <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1">
+                <span style="display:none" id="rateValue">1</span>
+            </div>
+            <div class="about-card">
+                <label for="pitch">Pitch:</label>
+                <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
+                <span style="display:none" id="pitchValue">1</span>
+            </div>
+            <div class="about-card">
+                <label for="testText">Test Voice:</label>
+                <input id="testText" value="Hello, this is a test!" placeholder="Enter test sentence..."
+                    onkeyup="set_output_array(this.value)"></input>
+                <button type="button" id="testSpeakButton"
+                    onclick="document.getElementById('text').value = document.getElementById('testText').value; document.getElementById('speakButton').click()">
+                    <a>Listen 🔊</a>
+                </button>
+            </div>
         </form>
-        </div>
-        <div class="subSettingsSpeech subSettings">
-            <form id="speechForm" style="display:none;" >
-                <div class="about-card">
-                    <label for="language">Select Language:</label>
-                    <select id="language"></select>
-                </div>
-                <div class="about-card">
-                    <label for="voice">Select Voice:</label>
-                    <select id="voice"></select>
-                </div>
-                <div class="about-card">
-                    <label for="rate">Rate:</label>
-                    <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1">
-                    <span style="display:none" id="rateValue">1</span>
-                </div>
-                <div class="about-card">
-                    <label for="pitch">Pitch:</label>
-                    <input type="range" id="pitch" min="0" max="2" step="0.1" value="1">
-                    <span style="display:none" id="pitchValue">1</span>
-                </div>
-                <div class="about-card">
-                    <label for="testText">Test Voice:</label>
-                    <input id="testText" value="Hello, this is a test!" placeholder="Enter test sentence..."
-                        onkeyup="set_output_array(this.value)"></input>
-                    <button type="button" id="testSpeakButton"
-                        onclick="document.getElementById('text').value = document.getElementById('testText').value; document.getElementById('speakButton').click()">
-                        <a>Listen 🔊</a>
-                    </button>
-                </div>
-            </form>
-        </div>
     </section>
     <div class="bottom-nav">
         <div id="info-" class="bottom-nav-btn">
@@ -390,7 +387,14 @@
             'vi': 'Vietnamese'
 
         };
-
+        function undo() {
+            word_list.pop()
+            textInput.value = word_list.join('')
+        }
+        function clear() {
+            word_list = []
+            textInput.value = ''
+        }
         function populateVoiceList() {
             voices = speechSynthesis.getVoices();
             updateLanguageList();
@@ -516,26 +520,8 @@
                 }
             });
         }
-
-        function showSubSettings(form_id, text) {
-            document.getElementsByClassName("settingsFormWrap")[0].style.display = "none";
-            
-            console.log(form_id)
-            document.getElementById(form_id).style.display="block"
-            document.getElementById(form_id).parentElement.style.display="block"
-            document.getElementsByClassName("settings-header")[0].innerText=text
-              
-        }
-        function settingsBack(){
-            if(document.getElementsByClassName("settingsFormWrap")[0].style.display=="none"){
-            Array.from(document.getElementsByClassName("subSettings")).forEach(elem =>{
-                elem.style.display="none"
-            })
-            document.getElementsByClassName("settingsFormWrap")[0].style.display="block"
-            document.getElementsByClassName("settings-header")[0].innerText="Settings"
-            }else{
-                document.getElementById("home-").click()
-            }
+        function settingsBack() {
+            document.getElementById("home-").click()
         }
         function logMessage(msg) {
             const span = document.createElement('span');
@@ -957,7 +943,9 @@
 
                 canvasCtx.beginPath();
                 canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
+                canvasCtx.fillStyle='#ffffff'
                 canvasCtx.stroke();
+                canvasCtx.fill()
 
 
             }
@@ -972,38 +960,44 @@
             const landmarks = results.landmarks;
             if (landmarks[0]) {
                 var hand = landmarks[0]
-
+                const zValues = hand.map(node => node.z);
+                const maxZ = Math.max.apply(null, zValues)
+                const minZ = Math.min.apply(null, zValues)
+                const zRange = maxZ-minZ
+                hand.forEach(node => {
+                    node.z = ((node.z - minZ) / zRange) * 255
+                });
                 // Thumb connections
-                drawConnection(hand[4], hand[3], '#ffe5b4', 5); // 4-3
-                drawConnection(hand[3], hand[2], '#ffe5b4', 5); // 3-2
-                drawConnection(hand[2], hand[1], '#ffe5b4', 5); // 2-1
+                drawConnection(hand[4], hand[3], 'rgb(0, 0, 255)', 5); // 4-3 (was red)
+                drawConnection(hand[3], hand[2], 'rgb(0, 0, 255)', 5); // 3-2 (was red)
+                drawConnection(hand[2], hand[1], 'rgb(0, 0, 255)', 5); // 2-1 (was red)
 
                 // Index connections
-                drawConnection(hand[8], hand[7], '#804080', 5); // 8-7
-                drawConnection(hand[7], hand[6], '#804080', 5); // 7-6
-                drawConnection(hand[6], hand[5], '#804080', 5); // 6-5
+                drawConnection(hand[8], hand[7], 'rgb(0, 255, 0)', 5); // 8-7
+                drawConnection(hand[7], hand[6], 'rgb(0, 255, 0)', 5); // 7-6
+                drawConnection(hand[6], hand[5], 'rgb(0, 255, 0)', 5); // 6-5
 
                 // Middle connections
-                drawConnection(hand[12], hand[11], '#ffcc00', 5); // 12-11
-                drawConnection(hand[11], hand[10], '#ffcc00', 5); // 11-10
-                drawConnection(hand[10], hand[9], '#ffcc00', 5); // 10-9
+                drawConnection(hand[12], hand[11], 'rgb(255, 0, 0)', 5); // 12-11 (was blue)
+                drawConnection(hand[11], hand[10], 'rgb(255, 0, 0)', 5); // 11-10 (was blue)
+                drawConnection(hand[10], hand[9], 'rgb(255, 0, 0)', 5); // 10-9 (was blue)
 
                 // Ring connections
-                drawConnection(hand[16], hand[15], '#30ff30', 5); // 16-15
-                drawConnection(hand[15], hand[14], '#30ff30', 5); // 15-14
-                drawConnection(hand[14], hand[13], '#30ff30', 5); // 14-13
+                drawConnection(hand[16], hand[15], 'rgb(0, 255, 255)', 5); // 16-15 (was yellow)
+                drawConnection(hand[15], hand[14], 'rgb(0, 255, 255)', 5); // 15-14 (was yellow)
+                drawConnection(hand[14], hand[13], 'rgb(0, 255, 255)', 5); // 14-13 (was yellow)
 
                 // Pinky connections
-                drawConnection(hand[20], hand[19], '#1565c0', 5); // 20-19
-                drawConnection(hand[19], hand[18], '#1565c0', 5); // 19-18
-                drawConnection(hand[18], hand[17], '#1565c0', 5); // 18-17
+                drawConnection(hand[20], hand[19], 'rgb(255, 0, 255)', 5); // 20-19
+                drawConnection(hand[19], hand[18], 'rgb(255, 0, 255)', 5); // 19-18
+                drawConnection(hand[18], hand[17], 'rgb(255, 0, 255)', 5); // 18-17
 
-                drawConnection(hand[0], hand[1], '#808080', 5); // 0-1
-                drawConnection(hand[0], hand[5], '#808080', 5); // 0-5
-                drawConnection(hand[0], hand[17], '#808080', 5); // 0-17
-                drawConnection(hand[5], hand[9], '#808080', 5); // 5-9
-                drawConnection(hand[9], hand[13], '#808080', 5); // 9-13
-                drawConnection(hand[13], hand[17], '#808080', 5); // 13-17
+                drawConnection(hand[0], hand[1], 'rgb(200, 200, 200)', 5); // 0-1
+                drawConnection(hand[0], hand[5], 'rgb(200, 200, 200)', 5); // 0-5
+                drawConnection(hand[0], hand[17], 'rgb(200, 200, 200)', 5); // 0-17
+                drawConnection(hand[5], hand[9], 'rgb(200, 200, 200)', 5); // 5-9
+                drawConnection(hand[9], hand[13], 'rgb(200, 200, 200)', 5); // 9-13
+                drawConnection(hand[13], hand[17], 'rgb(200, 200, 200)', 5); // 13-17
 
                 // Thumb
                 drawLandmarks(canvasCtx, hand[2], '#ffe5b4'); // Thumb tip (2)
@@ -1041,6 +1035,8 @@
                 drawLandmarks(canvasCtx, hand[13], '#ff3030'); // Ring palm (13)
 
                 drawLandmarks(canvasCtx, hand[17], '#ff3030'); // Pinky palm (17)
+
+                // Crop Canvas
                 cropCanvas(canvasElement, crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top)
             }
             // Add more drawing calls for each landmark collection as needed
@@ -1108,13 +1104,10 @@
             var image_height = (video.videoHeight / video.videoWidth) * canvasElement.width
             var image_width = canvasElement.width
 
-            canvasCtx.fillStyle = color;
-            canvasCtx.strokeStyle = 'white';
-            canvasCtx.lineWidth = 1;
+            canvasCtx.fillStyle = `rgb(${landmarks.z},${landmarks.z},${landmarks.z})`;
             canvasCtx.beginPath();
-            canvasCtx.arc(landmarks.x * image_width, landmarks.y * image_height, 6, 0, 2 * Math.PI);
+            canvasCtx.arc(landmarks.x * image_width, landmarks.y * image_height, 8, 0, 2 * Math.PI);
             canvasCtx.fill();
-            canvasCtx.stroke();
 
         }
 
@@ -1124,7 +1117,7 @@
             var image_width = canvasElement.width
 
             canvasCtx.strokeStyle = strokeColor;
-            canvasCtx.lineWidth = strokeWidth;
+            canvasCtx.lineWidth = strokeWidth-1;
             canvasCtx.beginPath();
             canvasCtx.moveTo(startNode.x * image_width, startNode.y * image_height);
             canvasCtx.lineTo(endNode.x * image_width, endNode.y * image_height);
