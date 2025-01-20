@@ -824,7 +824,7 @@
             }
             canvasCtx.save();
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-            canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
+           
             if (is_first_run == 1) {
                 var elem_rect = document.getElementById("output_canvas").getBoundingClientRect()
                 console.log(elem_rect.height | 0);
@@ -835,12 +835,15 @@
 
             if (results.landmarks && results.handednesses[0]) {
                 var current_time = Math.round(Date.now())
-                document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / 10) + "%"
+                document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / 7) + "%"
                 if (results.handednesses[0][0].categoryName == "Left") {
                     annotateImage()
+                    canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
+                    annotateImage(false)
                     console.log("LEFT")
                     //detectSign()
                 } else {
+                    canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
                     console.log("RIGHT")
                     var current_result = "_"
                     var previous_result = document.getElementById("predicted_result").innerText
@@ -848,7 +851,7 @@
 
 
                     if (previous_result == current_result) {
-                        if (current_time - last_letter_time > 1000) {
+                        if (current_time - last_letter_time > 700) {
                             last_letter_time = current_time
                             word_list.push(" ")
                             console.log(word_list)
@@ -861,6 +864,7 @@
                 }
             }
             else {
+                canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
                 if (30 > calculateCanvasBrightness(canvasElement)) {
 
                     var current_result = "<"
@@ -892,7 +896,7 @@
                 window.requestAnimationFrame(predictWebcam);
             }
         }
-        function annotateImage() {
+        function annotateImage(firstA=true) {
 
             //console.log(results.landmarks)
             if (results.landmarks[0]) {
@@ -940,12 +944,18 @@
                 if (crop_bottom > image_height) {
                     crop_bottom = image_height
                 }
-
+                if(firstA == true){
                 canvasCtx.beginPath();
                 canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
                 canvasCtx.fillStyle='#ffffff'
                 canvasCtx.stroke();
                 canvasCtx.fill()
+            }else{
+                canvasCtx.beginPath();
+                canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
+                canvasCtx.stroke(); 
+            }
+                
 
 
             }
@@ -1037,7 +1047,9 @@
                 drawLandmarks(canvasCtx, hand[17], '#ff3030'); // Pinky palm (17)
 
                 // Crop Canvas
+                if(firstA == true){
                 cropCanvas(canvasElement, crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top)
+                }
             }
             // Add more drawing calls for each landmark collection as needed
 
@@ -1083,7 +1095,7 @@
                 }
                 console.log("p:", previous_result, "c:", current_result)
                 if (previous_result == current_result) {
-                    if (current_time - last_letter_time > 1000) {
+                    if (current_time - last_letter_time > 700) {
                         last_letter_time = current_time
                         word_list.push(current_result)
                         console.log(word_list)
