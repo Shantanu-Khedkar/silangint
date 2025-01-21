@@ -837,9 +837,11 @@
                 var current_time = Math.round(Date.now())
                 document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / 7) + "%"
                 if (results.handednesses[0][0].categoryName == "Left") {
+                    if(!Array.from(document.getElementById('modeSelector').classList).includes('right') ){
                     annotateImage()
+                    }
                     canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
-                    annotateImage(false)
+                    annotateImage(Array.from(document.getElementById('modeSelector').classList).includes('right') )
                     console.log("LEFT")
                     //detectSign()
                 } else {
@@ -854,6 +856,7 @@
                         if (current_time - last_letter_time > 700) {
                             last_letter_time = current_time
                             word_list.push(" ")
+                            triggerPulse()
                             console.log(word_list)
                             document.getElementById("text").value = word_list.join('')
                         }
@@ -947,9 +950,7 @@
                 if(firstA == true){
                 canvasCtx.beginPath();
                 canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
-                canvasCtx.fillStyle='#ffffff'
                 canvasCtx.stroke();
-                canvasCtx.fill()
             }else{
                 canvasCtx.beginPath();
                 canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
@@ -1098,6 +1099,7 @@
                     if (current_time - last_letter_time > 700) {
                         last_letter_time = current_time
                         word_list.push(current_result)
+                        triggerPulse()
                         console.log(word_list)
                         document.getElementById("text").value = word_list.join('')
                     }
@@ -1162,6 +1164,17 @@
 
             return averageBrightness;
         }
+        function triggerPulse() {
+            console.log('did nothing')
+            /* Apply after working on pulse css more
+  const resultWrapper = document.querySelector('.wrapper_result');
+  resultWrapper.classList.add('pulse');
+
+  // Remove the class after the animation ends to allow it to be triggered again
+  resultWrapper.addEventListener('animationend', () => {
+    resultWrapper.classList.remove('pulse');
+  }, { once: true });*/
+}
     </script>
 
 
