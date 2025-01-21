@@ -45,7 +45,11 @@ Or clone the repository to get the most up-to-date version of the code.
 
 `$ git clone https://github.com/Shantanu-Khedkar/silangint.git`  
 
-Once you have the source, you can `$ cd silangint` and install all its dependancies by running `$ npm install`.  
+Once you have the source, you can `$ cd silangint` and install all its dependancies by running `$ npm install`.
+Temporarily move the .git repo out of the directory to skip including it in the APK.
+
+`$ mv .git ../`
+  
 Finally, you can build the APK.  
 
  `$ androidjs build`  
