@@ -50,7 +50,7 @@ Finally, you can build the APK.
 
  `$ androidjs build`  
  
-The APK will build and be stored in `dist/silangint.apk`
+The APK will build and be stored in `dist/SpeakSign.apk`
 
 ### Install
 
