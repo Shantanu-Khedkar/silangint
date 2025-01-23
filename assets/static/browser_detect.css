@@ -20,7 +20,7 @@ body {
   padding: 10px;
   background: #5d5d5d;
   border-radius: 12.5px;
-  min-width: calc(10px + 1em);
+  min-width: min-content;
   max-width: 100%;
   font-weight: bold;
   color: #DFDFDF;

@@ -167,7 +167,7 @@
         <div class="about-card">
             <span>Version</span>
 
-            <span>1.2.0</span>
+            <span>1.2.3</span>
         </div>
         <div class="about-card">
             <span>Author</span>
@@ -951,6 +951,11 @@
                 canvasCtx.beginPath();
                 canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
                 canvasCtx.stroke();
+                if(!Array.from(document.getElementById("modeSelector").classList).includes('right')){
+                canvasCtx.fillStyle="#ffffff"
+                canvasCtx.fill()
+                }
+                
             }else{
                 canvasCtx.beginPath();
                 canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
