@@ -88,7 +88,7 @@
 
             <div class="wrapper_result">
                 <div id="predicted_result">></div>
-                <div id="predicted_confidence">0</div>
+                
             </div>
             <div class="wrapper_text">
                 <textarea id="text" onkeyup="set_output_array(this.value)"></textarea>
@@ -168,7 +168,7 @@
         <div class="about-card">
             <span>Version</span>
 
-            <span>1.2.4</span>
+            <span>1.2.5</span>
         </div>
         <div class="about-card">
             <span>Author</span>
@@ -252,15 +252,21 @@
             </div>
             <div class="about-card">
                 <label for="duration">Input Duration <span id="durationValue"></span>(ms)</label>
-                <input type="range" id="duration" min="200" max="1500" step="1" value="560" oninput="document.getElementById('durationValue').innerText=this.value">
+                <input type="range" id="duration" min="200" max="1500" step="1" value="300"
+                    oninput="document.getElementById('durationValue').innerText=this.value">
+            </div>
+            <div class="about-card">
+                <label for="repeat">Repeat Buffer <span id="repeatValue"></span>(ms)</label>
+                <input type="range" id="repeat" min="200" max="700" step="1" value="500"
+                    oninput="document.getElementById('repeatValue').innerText=this.value">
             </div>
             <div class="about-card" style="flex-direction:row; align-items: center;">
-                <label style="margin-right: 10px;"for="duration">Natural Input :</label>
-                
+                <label style="margin-right: 10px;" for="duration">Natural Input :</label>
+
                 <label class="switch">
                     <input type="checkbox" id="natInp" unchecked>
                     <span class="slider round"></span>
-                  </label>
+                </label>
             </div>
         </form>
     </section>
@@ -657,11 +663,15 @@
         var time_since_letter = 0
         var last_letter_time = 0
         var maxPercentage = 1
-        
-        function inputFrequency(){
+
+        function inputFrequency() {
             return document.getElementById('duration').value
         }
-        document.getElementById('durationValue').innerText=inputFrequency()
+        function repeatBuffer() {
+            return document.getElementById('repeat').value
+        }
+        document.getElementById('durationValue').innerText = inputFrequency()
+        document.getElementById('repeatValue').innerText = repeatBuffer()
         var is_first_run = 1
         const letter_list = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
         const phrase_list = [" Good", " Hello", " How're", " I'm", " Thanks", " You"]
@@ -855,7 +865,7 @@
 
             if (results.landmarks && results.handednesses[0]) {
                 var current_time = Math.round(Date.now())
-                
+
                 if (results.handednesses[0][0].categoryName == "Left") {
                     if (!Array.from(document.getElementById('modeSelector').classList).includes('right')) {
                         annotateImage()
@@ -873,7 +883,7 @@
 
 
                     if (previous_result == current_result) {
-                        if (current_time - last_letter_time > 700) {
+                        if (current_time - last_letter_time > getNaturalLength(" ")) {
                             last_letter_time = current_time
                             word_list.push(" ")
                             triggerPulse()
@@ -885,7 +895,7 @@
                         last_letter_time = current_time
                     }
                 }
-                document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / getNaturalLength(global_cres)*100) + "%"
+                document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / getNaturalLength(global_cres) * 100) + "%"
             }
             else {
                 canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
@@ -1106,24 +1116,28 @@
 
             predict(tf.expandDims(predictionInput, 0));
         }
-        function getNaturalLength(letter){
-            console.log('i got', letter, word_list[word_list.length-1])
-            if(document.getElementById("natInp").checked){
-            if(letter != word_list[word_list.length-1]){
-                return ((inputFrequency()*(80/100)) * (1/(maxPercentage/100)))
-            }else{
-                console.log("penalty!")
-                return ((inputFrequency()*(80/100))+400)
-            }
-        }else{
-            if(letter != word_list[word_list.length-1]){
-                return ((inputFrequency()*(80/100)))
-            }else{
-                console.log("penalty!")
-                return ((inputFrequency()*(80/100))+400)
+        function getNaturalLength(letter) {
+            console.log('i got', letter, word_list[word_list.length - 1])
+            if (document.getElementById("natInp").checked) {
+                console.log('naturally:')
+                if (letter != word_list[word_list.length - 1]) {
+                    return ((inputFrequency()) * (1 / (maxPercentage / 100)))
+                } else {
+                    console.log("penalty!")
+                    var rb = Number(repeatBuffer())
+                    return ((inputFrequency()*(80/100))+400)
+                }
+            } else {
+                console.log('stably:')
+                if (letter != word_list[word_list.length - 1]) {
+                    return ((inputFrequency()))
+                } else {
+                    console.log("penalty!")
+                    var rb = Number(repeatBuffer())
+                    return ((inputFrequency()*(80/100))+rb)
+                }
             }
         }
-    }
         function mapLogitsToPercentage(logits) {
             // Apply ceiling of 260
             const cappedLogits = logits.map(value => Math.min(value, 260));
@@ -1145,7 +1159,7 @@
                 var outputArray = prediction.dataSync(); // Get the output as an array
                 var percentages = mapLogitsToPercentage(outputArray)
                 maxPercentage = Math.max(...percentages)
-                document.getElementById('predicted_confidence').innerText = maxPercentage
+                document.getElementById('predicted_result').style.opacity = (maxPercentage+30)+'%'
 
                 var predictedClass = percentages.indexOf(Math.max(...percentages)); // Get the index
 
@@ -1159,7 +1173,7 @@
                 }
                 console.log("p:", previous_result, "c:", current_result)
                 if (previous_result == current_result) {
-                    
+
                     if (current_time - last_letter_time > getNaturalLength(current_result)) {
                         last_letter_time = current_time
                         word_list.push(current_result)
