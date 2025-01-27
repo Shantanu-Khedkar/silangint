@@ -88,6 +88,7 @@
 
             <div class="wrapper_result">
                 <div id="predicted_result">></div>
+                <div id="predicted_confidence">0</div>
             </div>
             <div class="wrapper_text">
                 <textarea id="text" onkeyup="set_output_array(this.value)"></textarea>
@@ -167,7 +168,7 @@
         <div class="about-card">
             <span>Version</span>
 
-            <span>1.2.3</span>
+            <span>1.2.4</span>
         </div>
         <div class="about-card">
             <span>Author</span>
@@ -249,6 +250,18 @@
                     <a>Listen 🔊</a>
                 </button>
             </div>
+            <div class="about-card">
+                <label for="duration">Input Duration <span id="durationValue"></span>(ms)</label>
+                <input type="range" id="duration" min="200" max="1500" step="1" value="560" oninput="document.getElementById('durationValue').innerText=this.value">
+            </div>
+            <div class="about-card" style="flex-direction:row; align-items: center;">
+                <label style="margin-right: 10px;"for="duration">Natural Input :</label>
+                
+                <label class="switch">
+                    <input type="checkbox" id="natInp" unchecked>
+                    <span class="slider round"></span>
+                  </label>
+            </div>
         </form>
     </section>
     <div class="bottom-nav">
@@ -272,7 +285,7 @@
 
     </div>
     <script>
-
+        var word_list = []
         var speechSupported = true
         var prevSpeech = ""
         var prevSettings = ""
@@ -615,7 +628,7 @@
                 console.log("Text to speech is now not supported")
             }
         }
-        var word_list = []
+
 
 
         function set_output_array(text) {
@@ -643,6 +656,12 @@
         let webcamRunning = false;
         var time_since_letter = 0
         var last_letter_time = 0
+        var maxPercentage = 1
+        
+        function inputFrequency(){
+            return document.getElementById('duration').value
+        }
+        document.getElementById('durationValue').innerText=inputFrequency()
         var is_first_run = 1
         const letter_list = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"]
         const phrase_list = [" Good", " Hello", " How're", " I'm", " Thanks", " You"]
@@ -690,6 +709,7 @@
             }
         })
         var global_res = 0;
+        var global_cres = ''
         const video = document.getElementById("webcam");
         const canvasElement = document.getElementById("output_canvas");
         const canvasCtx = canvasElement.getContext("2d", { willReadFrequently: true });
@@ -824,7 +844,7 @@
             }
             canvasCtx.save();
             canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-           
+
             if (is_first_run == 1) {
                 var elem_rect = document.getElementById("output_canvas").getBoundingClientRect()
                 console.log(elem_rect.height | 0);
@@ -835,13 +855,13 @@
 
             if (results.landmarks && results.handednesses[0]) {
                 var current_time = Math.round(Date.now())
-                document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / 7) + "%"
+                
                 if (results.handednesses[0][0].categoryName == "Left") {
-                    if(!Array.from(document.getElementById('modeSelector').classList).includes('right') ){
-                    annotateImage()
+                    if (!Array.from(document.getElementById('modeSelector').classList).includes('right')) {
+                        annotateImage()
                     }
                     canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
-                    annotateImage(Array.from(document.getElementById('modeSelector').classList).includes('right') )
+                    annotateImage(Array.from(document.getElementById('modeSelector').classList).includes('right'))
                     console.log("LEFT")
                     //detectSign()
                 } else {
@@ -865,6 +885,7 @@
                         last_letter_time = current_time
                     }
                 }
+                document.getElementById("predicted_result").style.width = String((current_time - last_letter_time) / getNaturalLength(global_cres)*100) + "%"
             }
             else {
                 canvasCtx.drawImage(video, 0, 0, canvasElement.width, (video.videoHeight / video.videoWidth) * canvasElement.width)
@@ -894,12 +915,12 @@
             }
 
             canvasCtx.restore();
-            // Kepp predicting
+            // Keep predicting
             if (webcamRunning === true) {
                 window.requestAnimationFrame(predictWebcam);
             }
         }
-        function annotateImage(firstA=true) {
+        function annotateImage(firstA = true) {
 
             //console.log(results.landmarks)
             if (results.landmarks[0]) {
@@ -947,21 +968,21 @@
                 if (crop_bottom > image_height) {
                     crop_bottom = image_height
                 }
-                if(firstA == true){
-                canvasCtx.beginPath();
-                canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
-                canvasCtx.stroke();
-                if(!Array.from(document.getElementById("modeSelector").classList).includes('right')){
-                canvasCtx.fillStyle="#ffffff"
-                canvasCtx.fill()
+                if (firstA == true) {
+                    canvasCtx.beginPath();
+                    canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
+                    canvasCtx.stroke();
+                    if (!Array.from(document.getElementById("modeSelector").classList).includes('right')) {
+                        canvasCtx.fillStyle = "#ffffff"
+                        canvasCtx.fill()
+                    }
+
+                } else {
+                    canvasCtx.beginPath();
+                    canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
+                    canvasCtx.stroke();
                 }
-                
-            }else{
-                canvasCtx.beginPath();
-                canvasCtx.rect(crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top);
-                canvasCtx.stroke(); 
-            }
-                
+
 
 
             }
@@ -979,7 +1000,7 @@
                 const zValues = hand.map(node => node.z);
                 const maxZ = Math.max.apply(null, zValues)
                 const minZ = Math.min.apply(null, zValues)
-                const zRange = maxZ-minZ
+                const zRange = maxZ - minZ
                 hand.forEach(node => {
                     node.z = ((node.z - minZ) / zRange) * 255
                 });
@@ -1053,8 +1074,8 @@
                 drawLandmarks(canvasCtx, hand[17], '#ff3030'); // Pinky palm (17)
 
                 // Crop Canvas
-                if(firstA == true){
-                cropCanvas(canvasElement, crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top)
+                if (firstA == true) {
+                    cropCanvas(canvasElement, crop_left, crop_top, crop_right - crop_left, crop_bottom - crop_top)
                 }
             }
             // Add more drawing calls for each landmark collection as needed
@@ -1085,14 +1106,51 @@
 
             predict(tf.expandDims(predictionInput, 0));
         }
+        function getNaturalLength(letter){
+            console.log('i got', letter, word_list[word_list.length-1])
+            if(document.getElementById("natInp").checked){
+            if(letter != word_list[word_list.length-1]){
+                return ((inputFrequency()*(80/100)) * (1/(maxPercentage/100)))
+            }else{
+                console.log("penalty!")
+                return ((inputFrequency()*(80/100))+400)
+            }
+        }else{
+            if(letter != word_list[word_list.length-1]){
+                return ((inputFrequency()*(80/100)))
+            }else{
+                console.log("penalty!")
+                return ((inputFrequency()*(80/100))+400)
+            }
+        }
+    }
+        function mapLogitsToPercentage(logits) {
+            // Apply ceiling of 260
+            const cappedLogits = logits.map(value => Math.min(value, 260));
+
+            // Map the values from 0-260 to 0-100
+            const mappedPercentages = cappedLogits.map(value => (value / 260) * 100);
+
+            return mappedPercentages;
+        }
+
+
         async function predict(inputTensor) {
 
             console.log(index_list[0])
             objectDetector.then(function (res) {
+
                 var prediction = res.predict(inputTensor);
+
                 var outputArray = prediction.dataSync(); // Get the output as an array
-                var predictedClass = outputArray.indexOf(Math.max(...outputArray)); // Get the index
+                var percentages = mapLogitsToPercentage(outputArray)
+                maxPercentage = Math.max(...percentages)
+                document.getElementById('predicted_confidence').innerText = maxPercentage
+
+                var predictedClass = percentages.indexOf(Math.max(...percentages)); // Get the index
+
                 var current_result = index_list[predictedClass]
+                global_cres = current_result
                 var previous_result = document.getElementById("predicted_result").innerText
                 document.getElementById("predicted_result").innerText = current_result
                 var current_time = Math.round(Date.now())
@@ -1101,7 +1159,8 @@
                 }
                 console.log("p:", previous_result, "c:", current_result)
                 if (previous_result == current_result) {
-                    if (current_time - last_letter_time > 700) {
+                    
+                    if (current_time - last_letter_time > getNaturalLength(current_result)) {
                         last_letter_time = current_time
                         word_list.push(current_result)
                         triggerPulse()
@@ -1136,7 +1195,7 @@
             var image_width = canvasElement.width
 
             canvasCtx.strokeStyle = strokeColor;
-            canvasCtx.lineWidth = strokeWidth-1;
+            canvasCtx.lineWidth = strokeWidth - 1;
             canvasCtx.beginPath();
             canvasCtx.moveTo(startNode.x * image_width, startNode.y * image_height);
             canvasCtx.lineTo(endNode.x * image_width, endNode.y * image_height);
@@ -1179,7 +1238,7 @@
   resultWrapper.addEventListener('animationend', () => {
     resultWrapper.classList.remove('pulse');
   }, { once: true });*/
-}
+        }
     </script>
 
 
