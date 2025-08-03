@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!-- 
+    SignSpeak - A Communicator For Signers
+   
+    Copyright (C) 2025 Shantanu Khedkar
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <title>Loading...</title>
+    <script src="../assets/ipc/androidjs.js"></script>
+    <style>
+        
+        .loader-container{
+            position: absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%);
+            display:flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 40px;
+            
+        }
+        .loader {
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #ff6e7d; /* pink */
+            border-radius: 50%;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px; /* Size of the loader */
+            height: 80px; /* Size of the loader */
+            overflow:hidden;
+            animation: spin 2s ease-in-out infinite; /* Animation */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rspin {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .loadingtext{
+            font-size: 45px;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-weight: 900;
+        }
+        .loader2{
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-bottom: 8px solid #d6505e; /* pink */
+            border-radius: 72px;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px; /* Size of the loader */
+            height: 50px; /* Size of the loader */
+            overflow:hidden;
+            animation: spin 1s ease-in-out infinite; /* Animation */
+        }
+        .loader3{
+            border: 8px solid #f3f3f3; /* Light grey */
+            border-top: 8px solid #a8404b; /* pink */
+            border-radius: 72px;
+            width: 20px; /* Size of the loader */
+            height: 20px; /* Size of the loader */
+            overflow:hidden;
+            animation: spin 1s ease-in-out infinite; /* Animation */
+        }
+
+    </style>
+</head>
+<body>
+<div class="loader-container"><span class="loadingtext"><svg width="155" height="206" viewBox="0 0 310 412" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g filter="url(#filter0_d_21435_307)">
+    <path d="M186.81 198.496C176.153 230.73 130.699 230.73 120.042 198.496C118.566 194.034 117.995 189.322 118.361 184.635L129.694 27.7729C130.663 15.3457 140.999 5.75757 153.426 5.75757C165.852 5.75757 176.188 15.3457 177.158 27.7729L188.491 184.635C188.857 189.322 188.285 194.034 186.81 198.496Z" fill="#FF6E7D"/>
+    <path d="M129.248 210.461C131.138 242.358 93.345 260.329 69.9261 238.67C65.7586 234.815 62.575 230.013 60.6432 224.667L21.653 116.772C17.3477 104.858 22.7777 91.6137 34.1929 86.1855C45.6081 80.7572 59.2664 84.9246 65.7351 95.8096L124.318 194.388C127.221 199.272 128.911 204.784 129.248 210.461Z" fill="#FF6E7D"/>
+    <path d="M92.2772 198.028C93.9837 196.578 95.8085 195.273 97.7326 194.129L171.089 150.508C188.74 140.012 211.322 151.175 213.777 171.611C214.485 177.507 217.012 183.034 221.005 187.418L268.354 239.422C278.948 251.057 281.761 267.839 275.544 282.309L245.615 351.969C239.301 366.663 224.879 376.182 208.928 376.182H97.9241C81.9729 376.182 67.5505 366.663 61.2371 351.969L32.802 285.787C25.8462 269.597 30.2544 250.749 43.6623 239.352L92.2772 198.028Z" fill="#FF6E7D"/>
+    <path d="M55.1238 304.632C26.6986 296.743 20.0237 259.356 43.9529 242.062C49.3081 238.192 55.6418 235.913 62.2284 235.486L152.085 229.664C164.75 228.844 176.01 237.693 178.247 250.224C180.485 262.756 172.986 274.975 160.824 278.614L74.5386 304.437C68.2137 306.33 61.4852 306.397 55.1238 304.632Z" fill="#D6505E"/>
+    <path d="M239.546 153.001C228.433 125.986 190.518 125.338 178.413 151.957C176.038 157.178 175.042 162.922 175.519 168.637L183.682 266.336C184.68 278.282 194.526 287.521 206.477 287.725C218.427 287.929 228.609 279.033 230.048 267.128L241.82 169.769C242.509 164.074 241.726 158.3 239.546 153.001Z" fill="#D6505E"/>
+    <path d="M286.006 191.73C274.39 169.568 243.251 168.174 229.541 189.203C225.491 195.415 223.646 202.808 224.305 210.184L229.849 272.21C230.925 284.253 240.697 293.621 252.745 294.16C264.794 294.699 275.429 286.245 277.666 274.35L289.188 213.088C290.559 205.803 289.437 198.277 286.006 191.73Z" fill="#A8404B"/>
+    </g>
+    <defs>
+    <filter id="filter0_d_21435_307" x="0.181641" y="0.757568" width="309.576" height="410.424" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dy="15"/>
+    <feGaussianBlur stdDeviation="10"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_21435_307"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_21435_307" result="shape"/>
+    </filter>
+    </defs>
+    </svg></span>
+    <span class="loadingtext">SpeakSign</span><div class="loader"><div class="loader2"><div class="loader3"></div></div></div>
+
+
+</div>
+</body>
+    <script>
+        var appDir = "unset"
+        var userDir = "unset"
+        function getDir(){
+            try{
+            appDir = app.getPath('appData')+"/myapp"
+            userDir = app.getPath('userData')
+            }catch (error){
+                console.log("Not in Android WebView, setting defaults...")
+                appDir = './'
+                userDir = './'
+            }
+        setTimeout(sendDir, 50, appDir, userDir)
+        }
+        getDir()
+
+        function sendDir(appDir, userDir){
+            if((appDir != "unset") && (userDir != "unset")){
+            console.log(appDir)
+           
+            front.send("appDir", appDir, userDir)
+            }else{
+                getDir()
+            }
+        }
+        function loadMain(){
+            setTimeout(window.location.href="main.html", 1000)
+           
+        }
+        function checkServer(){
+            
+        front.send('isUp?', 'hi');
+    }
+
+    front.on('serverUp', function(msg){
+        if(msg == 0){
+            setTimeout(checkServer, 100)
+            
+        }else{
+            loadMain()
+        }
+        
+        })
+    
+        front.on("gotAppDir", function(ms){
+            checkServer()
+            console.log("checkingserver")
+        })
+    </script>
+</body>
+</html>
