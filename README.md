@@ -13,7 +13,7 @@ Many people around the world use sign language to communicate. Communication occ
 ## About
 
 Sign-Language-Interpreter aims to allow a fluent sign-language user to sign into a camera and have the user's message be spoken aloud.  
-*Currently this project has been implemented as a demo website running on [HugggingFace](https://huggingface.co/spaces/HuggingFace-SK/Sign-Language-Interpreter). To reach a wider audience and eliminate dependency on internet availability, this AndroidJS build is being developed*
+Currently a demo website runs on [Github Pages](https://shantanu-khedkar.github.io/silangint/). To allow for local, internet-independent usage, an AndroidJS build is aslo maintained.
 
 ## Built With
 
@@ -45,16 +45,13 @@ Or clone the repository to get the most up-to-date version of the code.
 
 `$ git clone https://github.com/Shantanu-Khedkar/silangint.git`  
 
-Once you have the source, you can `$ cd silangint` and install all its dependancies by running `$ npm install`.
-Temporarily move the .git folder out of the directory to skip including it in the APK.
-
-`$ mv .git ../`
+Once you have the source, you can `$ cd silangint/android` and install all its dependencies by running `$ npm install`.
   
 Finally, you can build the APK.  
 
  `$ androidjs build`  
  
-The APK will build and be stored in `dist/SpeakSign.apk`
+The APK will build and be stored in `android/dist/SpeakSign.apk`
 
 ### Install
 
